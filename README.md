@@ -65,12 +65,6 @@ Against the seeded development API. Password: `PickleQueue123!`
 - `zoe@picklequeue.dev` â€” player
 - `jordan@picklequeue.dev` â€” Queue Master
 
-## CI
-
-`.github/workflows/ci.yml` runs types, lint, contract tests, the production
-build, formatting and the dependency audit on every push and pull request. It
-installs this repository only.
-
 ## Deployment
 
 Install and build with the repository scripts:
