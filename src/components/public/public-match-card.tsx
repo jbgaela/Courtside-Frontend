@@ -28,7 +28,7 @@ export function PublicMatchCard({
         <p
           className={cn(
             'text-[0.6rem] font-bold uppercase tracking-[0.13em]',
-            tone === 'dark' ? 'text-white/40' : 'text-muted-foreground',
+            tone === 'dark' ? 'text-white/65' : 'text-muted-foreground',
           )}
         >
           {match.court.name} · Round {match.round}
@@ -57,7 +57,7 @@ export function PublicMatchCard({
               <div className="min-w-0 flex-1">
                 <p
                   className={cn(
-                    'truncate text-xs font-semibold',
+                    'line-clamp-2 break-words text-xs font-semibold leading-snug',
                     tone === 'dark'
                       ? winner
                         ? 'text-white'
@@ -71,8 +71,8 @@ export function PublicMatchCard({
                 </p>
                 <p
                   className={cn(
-                    'text-[0.55rem]',
-                    tone === 'dark' ? 'text-white/30' : 'text-muted-foreground',
+                    'mt-0.5 text-[0.62rem]',
+                    tone === 'dark' ? 'text-white/60' : 'text-muted-foreground',
                   )}
                 >
                   {players.map((player) => player.skillRating.toFixed(2)).join(' / ')}

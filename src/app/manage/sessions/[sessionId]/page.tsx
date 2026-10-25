@@ -439,8 +439,8 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
       </div>
 
       {session.status === 'LIVE' ? (
-        <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
-          <div className="space-y-4">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)]">
+          <div className="min-w-0 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-xl font-bold">Courts</h2>
               <div className="flex items-center gap-2">
@@ -470,7 +470,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
             {live.isLoading ? (
               <div className="h-64 animate-pulse rounded-2xl bg-secondary/60" />
             ) : live.data ? (
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {live.data.courts.map((court) => (
                   <Card key={court.id} className="overflow-hidden">
                     <CardContent className="p-4">
@@ -492,13 +492,13 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                       {court.match ? (
                         <div className="mt-3 rounded-xl bg-secondary/50 p-3">
                           <div className="flex items-end justify-between gap-2">
-                            <div className="min-w-0 text-xs">
-                              <p className="truncate font-semibold">
+                            <div className="min-w-0 text-xs leading-snug">
+                              <p className="line-clamp-2 break-words font-semibold">
                                 {court.match.teams.A.map((player) => player.displayName).join(
                                   ' + ',
                                 )}
                               </p>
-                              <p className="mt-0.5 truncate text-muted-foreground">
+                              <p className="mt-1 line-clamp-2 break-words text-muted-foreground">
                                 {court.match.teams.B.map((player) => player.displayName).join(
                                   ' + ',
                                 )}
@@ -510,7 +510,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                               {court.match.currentGame.b}
                             </div>
                           </div>
-                          <div className="mt-3 flex gap-2">
+                          <div className="mt-3 flex flex-wrap gap-2">
                             {court.match.status === 'READY' ? (
                               <Button
                                 size="sm"
@@ -560,7 +560,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
             ) : null}
           </div>
 
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             <Card>
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
@@ -627,7 +627,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                         </div>
                         <div className="mt-2 space-y-1.5">
                           <div className="flex items-center justify-between gap-2">
-                            <p className="truncate text-xs font-semibold">
+                            <p className="line-clamp-2 break-words text-xs font-semibold leading-snug">
                               {assignment.teamA.map((player) => player.displayName).join(' + ')}
                             </p>
                             <span className="text-xs font-bold tabular">
@@ -635,7 +635,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-2">
-                            <p className="truncate text-xs font-semibold">
+                            <p className="line-clamp-2 break-words text-xs font-semibold leading-snug">
                               {assignment.teamB.map((player) => player.displayName).join(' + ')}
                             </p>
                             <span className="text-xs font-bold tabular">

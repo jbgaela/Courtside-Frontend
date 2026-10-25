@@ -69,7 +69,9 @@ export default function CheckInPage({ params }: { params: Promise<{ token: strin
                 <h1 className="mt-4 font-display text-2xl font-extrabold">You are checked in</h1>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{message}</p>
                 <Button asChild className="mt-5">
-                  <Link href="/app/queue">Open my queue</Link>
+                  <Link href="/app/queue" className="inline-flex min-h-6 items-center">
+                    Open my queue
+                  </Link>
                 </Button>
               </>
             ) : (

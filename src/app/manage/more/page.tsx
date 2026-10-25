@@ -56,13 +56,13 @@ export default function ManageMorePage() {
 
       <Card>
         <CardContent className="p-5">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Avatar name={me?.profile?.displayName ?? me?.name ?? 'Queue Master'} size="lg" />
-            <div className="min-w-0 flex-1">
+            <div className="min-w-[10rem] flex-1">
               <p className="truncate font-display text-lg font-bold">
                 {me?.profile?.displayName ?? me?.name}
               </p>
-              <p className="text-xs text-muted-foreground">{me?.email}</p>
+              <p className="truncate text-xs text-muted-foreground">{me?.email}</p>
             </div>
             <Badge tone="lime">Queue Master</Badge>
           </div>
@@ -149,7 +149,7 @@ export default function ManageMorePage() {
         <Link
           href="/public/sessions/s_riverside_saturday"
           target="_blank"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+          className="inline-flex min-h-6 items-center gap-1 text-xs font-semibold text-primary hover:underline"
         >
           Public demo <ExternalLink className="size-3" />
         </Link>

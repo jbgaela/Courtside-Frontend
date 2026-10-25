@@ -99,7 +99,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                   <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                     Your position
                   </p>
-                  <div className="mt-1 flex items-baseline gap-3">
+                  <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span
                       className={
                         self.state === 'PAUSED'
@@ -221,8 +221,8 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
         />
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-        <Card>
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+        <Card className="min-w-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">Waiting list</h2>
@@ -245,11 +245,11 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                     </span>
                     <Avatar name={entry.displayName} size="sm" />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-bold">
+                      <p className="line-clamp-2 break-words text-xs font-bold">
                         {entry.displayName}
                         {entry.userId === self?.userId ? ' (you)' : ''}
                       </p>
-                      <p className="text-[0.6rem] text-muted-foreground">
+                      <p className="mt-0.5 text-[0.68rem] text-muted-foreground">
                         {entry.gamesPlayed} games · {entry.waitingMinutes}m wait
                       </p>
                     </div>
@@ -265,18 +265,18 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="min-w-0">
           <CardContent className="p-5">
             <h2 className="font-display text-lg font-bold">Courts</h2>
             <div className="mt-3 space-y-2">
               {snapshot.courts.map((court) => (
                 <div
                   key={court.id}
-                  className="flex items-center justify-between rounded-xl bg-secondary/50 px-3 py-2.5"
+                  className="flex items-center justify-between gap-2 rounded-xl bg-secondary/50 px-3 py-2.5"
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xs font-bold">{court.name}</p>
-                    <p className="text-[0.6rem] text-muted-foreground">
+                    <p className="mt-0.5 text-[0.68rem] leading-relaxed text-muted-foreground">
                       {court.match
                         ? court.match.teams.A.map(
                             (player) => player.displayName.split(' ')[0],

@@ -27,7 +27,7 @@ function TeamRow({
         />
         <p
           className={cn(
-            'truncate text-xs font-semibold',
+            'line-clamp-2 break-words text-xs font-semibold leading-snug',
             tone === 'dark'
               ? winner
                 ? 'text-white'

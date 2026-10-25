@@ -143,7 +143,7 @@ export default function ClubCourtsPage({ params }: { params: Promise<{ clubId: s
                   <Select
                     value={court.status}
                     onChange={(event) => void update(court.id, { status: event.target.value })}
-                    className="h-8 w-auto min-w-32 text-xs"
+                    className="h-8 w-auto min-w-32 text-xs max-sm:h-11"
                     aria-label={`Status for ${court.name}`}
                   >
                     <option value="AVAILABLE">Available</option>

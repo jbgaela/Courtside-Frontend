@@ -260,9 +260,9 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
         description="A few decisions now keep the rotation fair, clear and fast later."
       />
 
-      <div className="grid gap-5 xl:grid-cols-[1fr_20rem]">
-        <div>
-          <div className="mb-4 flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="min-w-0">
+          <div className="mb-4 flex w-full max-w-full items-center gap-1 overflow-x-auto no-scrollbar">
             {steps.map((entry, index) => {
               const active = index === step;
               const done = index < step;
@@ -274,7 +274,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                     if (index < step || canContinue) setStep(index);
                   }}
                   className={cn(
-                    'flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold transition-colors',
+                    'flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold transition-colors max-sm:min-h-11',
                     active
                       ? 'bg-forest text-white'
                       : done
@@ -381,8 +381,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                   {startDate && endDate ? (
                     <div className="rounded-xl bg-secondary/60 px-3.5 py-2.5 text-xs text-muted-foreground">
                       <Clock3 className="mr-1.5 inline size-3.5" />
-                      {formatDay(startIso!, timezone)} ·{' '}
-                      {formatRange(startIso!, endIso!, timezone)}
+                      {formatDay(startIso!, timezone)} · {formatRange(startIso!, endIso!, timezone)}
                     </div>
                   ) : null}
                 </div>
@@ -740,7 +739,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
           </Card>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           <Card>
             <CardContent className="p-5">
               <p className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">

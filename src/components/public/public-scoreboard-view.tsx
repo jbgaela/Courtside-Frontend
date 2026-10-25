@@ -38,18 +38,18 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
       <header className="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-8">
         <Logo tone="light" compact />
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 text-[0.62rem] font-semibold text-white/45">
+          <span className="inline-flex items-center gap-1.5 text-[0.62rem] font-semibold text-white/65">
             <span
               className={`size-1.5 rounded-full ${status === 'live' ? 'bg-lime live-dot' : 'bg-white/25'}`}
             />
             {status === 'live' ? 'Live' : 'Reconnecting'}
           </span>
-          <span className="hidden text-[0.62rem] text-white/35 sm:inline">
+          <span className="hidden text-[0.62rem] text-white/60 sm:inline">
             {data.club.name} · {formatRange(data.startsAt, data.endsAt, data.timezone)}
           </span>
           <Link
             href={`/public/sessions/${data.id}`}
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-xs font-semibold text-white/70 hover:bg-white/10 hover:text-white"
+            className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-xs font-semibold text-white/70 max-sm:min-h-11 hover:bg-white/10 hover:text-white"
           >
             <ArrowLeft className="size-3.5" /> Exit
           </Link>
@@ -77,7 +77,7 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
                 timeZone: data.timezone,
               }).format(now)}
             </p>
-            <p className="text-[0.62rem] uppercase tracking-[0.14em] text-white/35">
+            <p className="text-[0.62rem] uppercase tracking-[0.14em] text-white/60">
               {data.counts.checkedIn} players · {live.length} live
             </p>
           </div>
@@ -95,7 +95,7 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
               >
                 <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
                   <p className="font-display text-lg font-bold">{court.name}</p>
-                  <span className="inline-flex items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.12em] text-white/45">
+                  <span className="inline-flex items-center gap-1.5 text-[0.62rem] font-bold uppercase tracking-[0.12em] text-white/65">
                     <span
                       className={`size-1.5 rounded-full ${match ? 'bg-lime live-dot' : 'bg-white/20'}`}
                     />
@@ -115,11 +115,11 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
                         <div key={team} className="flex items-center gap-3 py-2">
                           <div className="min-w-0 flex-1">
                             <p
-                              className={`truncate text-lg font-bold ${leading ? 'text-white' : 'text-white/60'}`}
+                              className={`line-clamp-2 break-words text-base font-bold leading-tight sm:text-lg ${leading ? 'text-white' : 'text-white/60'}`}
                             >
                               {players.map((player) => player.name).join(' + ')}
                             </p>
-                            <p className="text-[0.6rem] text-white/30">
+                            <p className="mt-0.5 text-[0.68rem] text-white/60">
                               {players.map((player) => player.skillRating.toFixed(2)).join(' / ')}
                             </p>
                           </div>
@@ -132,7 +132,7 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
                         </div>
                       );
                     })}
-                    <p className="mt-3 text-[0.6rem] uppercase tracking-[0.12em] text-white/30">
+                    <p className="mt-3 text-[0.62rem] uppercase tracking-[0.12em] text-white/60">
                       First to {match.scoring.targetScore}
                       {match.games.length > 1
                         ? ` · games ${match.gamesWonA}–${match.gamesWonB}`
@@ -143,7 +143,7 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
                   <div className="flex h-48 flex-col items-center justify-center px-5 text-center">
                     <MonitorPlay className="size-6 text-white/25" />
                     <p className="mt-2 text-sm font-semibold text-white/60">Next rotation</p>
-                    <p className="mt-1 text-[0.65rem] text-white/30">Stay close to the court.</p>
+                    <p className="mt-1 text-[0.65rem] text-white/55">Stay close to the court.</p>
                   </div>
                 )}
               </div>
@@ -162,19 +162,22 @@ export function PublicScoreboardView({ initialData }: { initialData: PublicSessi
               className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4"
             >
               <p className="font-display text-3xl font-extrabold tabular">{value}</p>
-              <p className="text-[0.58rem] font-bold uppercase tracking-[0.16em] text-white/35">
+              <p className="text-[0.62rem] font-bold uppercase tracking-[0.16em] text-white/60">
                 {label}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 flex items-center justify-between text-[0.62rem] text-white/30">
+        <div className="mt-8 flex items-center justify-between text-[0.62rem] text-white/55">
           <span className="inline-flex items-center gap-1.5">
             <Clock3 className="size-3.5" /> Scores update automatically after each point.
           </span>
-          <Link href={`/public/sessions/${data.id}`} className="hover:text-white/60">
-            Upcoming & results
+          <Link
+            href={`/public/sessions/${data.id}`}
+            className="inline-flex min-h-6 items-center hover:text-white/60"
+          >
+            Upcoming &amp; results
           </Link>
         </div>
       </main>

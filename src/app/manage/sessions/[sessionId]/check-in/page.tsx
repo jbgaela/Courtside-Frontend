@@ -330,7 +330,7 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
   };
 
   return (
-    <div className="space-y-6 overflow-x-hidden">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
           <Link href={`/manage/sessions/${sessionId}`}>
@@ -396,10 +396,10 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
         </div>
       ) : null}
 
-      <div className="grid gap-5 xl:grid-cols-[1fr_20rem]">
-        <div className="space-y-4">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="min-w-0 space-y-4">
           <div className="space-y-3">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3">
               <Segmented
                 value={statusTab}
                 onChange={setStatusTab}
@@ -416,13 +416,13 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
                   { value: 'in', label: 'In', count: checked.length },
                 ]}
               />
-              <div className="relative sm:w-64">
+              <div className="relative min-w-0 w-full">
                 <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   placeholder="Search participants"
-                  className="h-10 rounded-full pl-9"
+                  className="h-10 rounded-full pl-9 max-sm:h-11"
                   aria-label="Search participants"
                 />
               </div>
@@ -479,7 +479,7 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
                 const inActiveMatch = ['PLAYING', 'RESERVED'].includes(row.queueState ?? '');
                 return (
                   <Card key={`${row.participantType}-${row.id}`}>
-                    <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between lg:flex-col lg:items-stretch xl:flex-row xl:items-center xl:justify-between">
                       <div className="flex min-w-0 items-center gap-3">
                         <Avatar name={row.displayName} size="md" />
                         <div className="min-w-0">
@@ -621,7 +621,7 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
           )}
         </div>
 
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           <Card>
             <CardContent className="p-5">
               <div className="flex items-center gap-2">
@@ -637,6 +637,7 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
                       bgColor="#ffffff"
                       fgColor="#164430"
                       level="M"
+                      title="QR code to check in to this session"
                     />
                   </div>
                   <p className="mt-3 text-[0.65rem] leading-relaxed text-muted-foreground">

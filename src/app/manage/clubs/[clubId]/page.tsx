@@ -116,7 +116,7 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
         <StatCard
           label="Active members"
           value={club.memberCount ?? 0}
@@ -140,8 +140,8 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
         />
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1.4fr_0.6fr]">
-        <div className="space-y-5">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.6fr)]">
+        <div className="min-w-0 space-y-5">
           {live ? (
             <div className="relative overflow-hidden rounded-[1.5rem] bg-forest p-5 text-white">
               <div className="pickle-pattern absolute inset-0 opacity-30" />
@@ -219,11 +219,16 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
                       <CalendarDays className="size-4" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="truncate text-sm font-bold">{session.name}</p>
+                      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                        <p
+                          className="min-w-0 flex-1 basis-24 truncate text-sm font-bold"
+                          title={session.name}
+                        >
+                          {session.name}
+                        </p>
                         <SessionStatusBadge status={session.status} />
                       </div>
-                      <p className="mt-0.5 text-[0.65rem] text-muted-foreground">
+                      <p className="mt-1 text-[0.68rem] leading-relaxed text-muted-foreground">
                         {formatShortDay(session.startsAt, session.timezone)} ·{' '}
                         {session.registered ?? 0} registered · {session.checkedIn ?? 0} checked in
                       </p>
@@ -238,7 +243,7 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
           </div>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           <Card>
             <CardContent className="p-5">
               <h2 className="font-display text-base font-bold">Club tools</h2>
@@ -271,7 +276,7 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
                     <Link
                       key={item.label}
                       href={item.href}
-                      className="flex min-h-10 items-center gap-2.5 rounded-xl px-2.5 text-xs font-semibold text-foreground/80 transition-colors hover:bg-secondary/60"
+                      className="flex min-h-10 items-center gap-2.5 rounded-xl px-2.5 text-xs font-semibold text-foreground/80 transition-colors max-sm:min-h-11 hover:bg-secondary/60"
                     >
                       <span className="grid size-7 place-items-center rounded-lg bg-secondary text-primary">
                         <Icon className="size-3.5" />

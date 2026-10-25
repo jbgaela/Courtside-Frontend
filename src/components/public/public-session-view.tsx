@@ -124,7 +124,7 @@ export function PublicSessionView({ initialData }: { initialData: PublicSession 
                   className="min-w-20 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2.5 text-center"
                 >
                   <p className="font-display text-2xl font-extrabold tabular">{value}</p>
-                  <p className="text-[0.55rem] font-bold uppercase tracking-[0.12em] text-white/40">
+                  <p className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-white/60">
                     {label}
                   </p>
                 </div>

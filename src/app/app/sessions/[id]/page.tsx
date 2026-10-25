@@ -350,7 +350,7 @@ export default function SessionDetailPage({ params }: { params: Promise<{ id: st
                             </div>
                             <Link
                               href={`/app/matches/${court.match.id}`}
-                              className="mt-2 inline-flex text-[0.65rem] font-bold text-primary hover:underline"
+                              className="mt-2 inline-flex min-h-6 items-center text-[0.68rem] font-bold text-primary hover:underline"
                             >
                               View scoreboard
                             </Link>

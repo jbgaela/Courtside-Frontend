@@ -190,9 +190,7 @@ export default function WelcomePage() {
                         <span className="font-display text-4xl font-extrabold leading-none">
                           {match.a}
                         </span>
-                        <span className="pb-1 text-lg font-semibold text-muted-foreground">
-                          –
-                        </span>
+                        <span className="pb-1 text-lg font-semibold text-muted-foreground">–</span>
                         <span className="font-display text-4xl font-extrabold leading-none">
                           {match.b}
                         </span>
