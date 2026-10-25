@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ShieldAlert } from 'lucide-react';
-import { useAuth, useIsAdmin } from '@/lib/auth';
+import { useAuth, useIsAdmin, useIsSuperAdmin } from '@/lib/auth';
 import { PageSkeleton } from '@/components/ui/feedback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,14 +12,17 @@ import Link from 'next/link';
 export function RequireAuth({
   children,
   requireAdmin = false,
+  requireSuperAdmin = false,
 }: {
   children: React.ReactNode;
   requireAdmin?: boolean;
+  requireSuperAdmin?: boolean;
 }) {
   const { me, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const isAdmin = useIsAdmin();
+  const isSuperAdmin = useIsSuperAdmin();
 
   React.useEffect(() => {
     if (!loading && !me) {
@@ -42,6 +45,28 @@ export function RequireAuth({
           <p className="font-display text-xl font-bold">Signing you in…</p>
           <p className="mt-1 text-sm text-muted-foreground">Redirecting to the sign-in page.</p>
         </div>
+      </div>
+    );
+  }
+
+  if (requireSuperAdmin && !isSuperAdmin) {
+    return (
+      <div className="mx-auto max-w-xl p-6">
+        <Card>
+          <CardContent className="flex flex-col items-center pt-8 text-center">
+            <span className="grid size-14 place-items-center rounded-2xl bg-[#fbe9e7] text-destructive">
+              <ShieldAlert className="size-6" />
+            </span>
+            <h1 className="mt-4 font-display text-2xl font-bold">Super Admin access required</h1>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Platform administration is limited to authorized Super Admins. Club roles do not grant
+              platform account-management access.
+            </p>
+            <Button asChild className="mt-5">
+              <Link href="/app">Back to my dashboard</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

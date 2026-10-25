@@ -14,12 +14,25 @@ export interface MembershipSummary {
   location: string | null;
 }
 
+export type PlatformRole = 'USER' | 'SUPER_ADMIN';
+export type AccountStatus =
+  | 'PENDING_APPROVAL'
+  | 'APPROVED_PENDING_ACTIVATION'
+  | 'ACTIVE'
+  | 'SUSPENDED'
+  | 'DEACTIVATED'
+  | 'DELETED';
+export type RegistrationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
 export interface Me {
   id: string;
   email: string;
   name: string;
   emailVerified: boolean;
   emailVerifiedAt: string | null;
+  platformRole: PlatformRole;
+  accountStatus: AccountStatus;
+  activatedAt: string | null;
   createdAt: string;
   profile: {
     displayName: string;
@@ -29,6 +42,20 @@ export interface Me {
   } | null;
   memberships: MembershipSummary[];
   csrfToken: string;
+}
+
+export interface RegistrationStatusView {
+  name: string;
+  email: string;
+  accountStatus: AccountStatus;
+  registrationStatus: RegistrationStatus | null;
+  submittedAt: string | null;
+  reviewedAt: string | null;
+  publicReason: string | null;
+  canActivate: boolean;
+  restricted: boolean;
+  csrfToken: string;
+  expiresAt: string;
 }
 
 export interface ClubSummary {

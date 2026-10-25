@@ -3,14 +3,26 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { safeInternalPath } from '@/lib/navigation';
-import type { Me } from '@/lib/types';
+import { clearRegistrationClientState, setRegistrationCsrf } from '@/lib/registration-session';
+import type { Me, RegistrationStatusView } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Field, Input } from '@/components/ui/input';
+
+type LoginResponse =
+  | { restricted: false; user: Me; csrfToken: string; expiresAt: string }
+  | {
+      restricted: true;
+      status: 'PENDING_APPROVAL' | 'APPROVED_PENDING_ACTIVATION' | 'REJECTED';
+      registration: RegistrationStatusView;
+      csrfToken: string;
+      expiresAt: string;
+    }
+  | { mfaRequired: true; setupRequired: boolean; expiresAt: string };
 
 export function SignInForm({ next }: { next?: string }) {
   const { setMe } = useAuth();
@@ -18,34 +30,128 @@ export function SignInForm({ next }: { next?: string }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState<'form' | 'owner' | 'player' | null>(null);
+  const [loading, setLoading] = useState<'form' | 'owner' | 'player' | 'admin' | 'mfa' | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
+  const [mfaRequired, setMfaRequired] = useState(false);
+  const [mfaCode, setMfaCode] = useState('');
 
   const signIn = async (
     emailValue: string,
     passwordValue: string,
-    source: 'form' | 'owner' | 'player',
+    source: 'form' | 'owner' | 'player' | 'admin',
   ) => {
     setLoading(source);
     setError(null);
     try {
-      const response = await api.post<{ user: Me; csrfToken: string }>('/api/v1/auth/login', {
+      const response = await api.post<LoginResponse>('/api/v1/auth/login', {
         email: emailValue,
         password: passwordValue,
       });
+      if ('mfaRequired' in response) {
+        if (response.setupRequired) {
+          router.replace('/mfa-setup');
+          return;
+        }
+        setMfaRequired(true);
+        setLoading(null);
+        return;
+      }
+      if (response.restricted) {
+        setRegistrationCsrf(response.csrfToken);
+        router.replace(
+          response.status === 'APPROVED_PENDING_ACTIVATION' ? '/activate' : '/registration-status',
+        );
+        return;
+      }
+      clearRegistrationClientState();
       setMe(response.user);
       toast.success(
         `Welcome back, ${response.user.profile?.displayName ?? response.user.name.split(' ')[0]}`,
       );
       const target =
         safeInternalPath(next) ??
-        (response.user.memberships.some((m) => m.role !== 'PLAYER') ? '/manage' : '/app');
+        (response.user.platformRole === 'SUPER_ADMIN'
+          ? '/admin'
+          : response.user.memberships.some((m) => m.role !== 'PLAYER')
+            ? '/manage'
+            : '/app');
       router.replace(target);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to sign in');
       setLoading(null);
     }
   };
+
+  const verifyMfa = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading('mfa');
+    setError(null);
+    try {
+      const response = await api.post<{ user: Me; csrfToken: string }>('/api/v1/auth/mfa/verify', {
+        code: mfaCode,
+      });
+      setMe(response.user);
+      toast.success('Identity verified');
+      router.replace(response.user.platformRole === 'SUPER_ADMIN' ? '/admin' : '/app');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to verify the authenticator code');
+      setLoading(null);
+    }
+  };
+
+  if (mfaRequired) {
+    return (
+      <div>
+        <span className="grid size-14 place-items-center rounded-2xl bg-lime-soft text-[#486b1c]">
+          <ShieldCheck className="size-7" />
+        </span>
+        <p className="mt-4 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#47671b]">
+          Two-factor security
+        </p>
+        <h1 className="mt-2 font-display text-3xl font-extrabold tracking-[-0.04em]">
+          Enter your authenticator code
+        </h1>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          Open your authenticator app and enter the current six-digit code for PickleQueue.
+        </p>
+        <form className="mt-6 space-y-4" onSubmit={(event) => void verifyMfa(event)}>
+          <Field label="Six-digit code" htmlFor="mfa-code">
+            <Input
+              id="mfa-code"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="[0-9]{6}"
+              maxLength={6}
+              value={mfaCode}
+              onChange={(event) => setMfaCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
+              className="text-center text-xl tracking-[0.35em]"
+              required
+              autoFocus
+            />
+          </Field>
+          {error ? (
+            <div
+              className="rounded-xl border border-[#f0d8d4] bg-[#fdf6f5] px-3.5 py-2.5 text-xs font-medium text-[#8f3a33]"
+              role="alert"
+            >
+              {error}
+            </div>
+          ) : null}
+          <Button type="submit" className="w-full" size="lg" disabled={loading !== null}>
+            {loading === 'mfa' ? <Loader2 className="size-4 animate-spin" /> : null}
+            Verify and continue
+          </Button>
+        </form>
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          <Link href="/sign-in" className="font-semibold text-primary hover:underline">
+            Use a different account
+          </Link>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -58,6 +164,9 @@ export function SignInForm({ next }: { next?: string }) {
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Your queue, courts and next match are waiting.
+        </p>
+        <p className="mt-3 rounded-xl border border-[#d9edb2] bg-lime-soft/50 px-3 py-2 text-[0.7rem] font-medium leading-relaxed text-[#3f5c16]">
+          New accounts require administrator approval before they can be used.
         </p>
       </div>
 
@@ -144,7 +253,7 @@ export function SignInForm({ next }: { next?: string }) {
           disabled={loading !== null}
         >
           <span className="text-xs font-bold">Queue Master</span>
-          <span className="text-[0.6rem] font-normal text-muted-foreground">Morgan Â· demo</span>
+          <span className="text-[0.6rem] font-normal text-muted-foreground">Morgan - demo</span>
         </Button>
         <Button
           type="button"
@@ -155,7 +264,18 @@ export function SignInForm({ next }: { next?: string }) {
           disabled={loading !== null}
         >
           <span className="text-xs font-bold">Player</span>
-          <span className="text-[0.6rem] font-normal text-muted-foreground">Alex Â· demo</span>
+          <span className="text-[0.6rem] font-normal text-muted-foreground">Alex - demo</span>
+        </Button>
+        <Button
+          type="button"
+          variant="dark"
+          size="sm"
+          className="col-span-2 h-auto flex-col items-start gap-0.5 px-3 py-2.5 text-left"
+          onClick={() => void signIn('sarah@picklequeue.dev', 'PickleQueue123!', 'admin')}
+          disabled={loading !== null}
+        >
+          <span className="text-xs font-bold">Super Admin</span>
+          <span className="text-[0.6rem] font-normal text-white/60">Sarah - platform demo</span>
         </Button>
       </div>
 
