@@ -150,8 +150,8 @@ export default function AdminCreateUserPage() {
               </Field>
               <div className="rounded-xl border border-[#d9edb2] bg-lime-soft/50 p-3 text-xs leading-relaxed text-[#3f5c16]">
                 <KeyRound className="mr-1 inline size-3.5" />
-                No email is sent. The account remains awaiting activation until the recipient redeems
-                a one-time claim link.
+                No email is sent. The account remains awaiting activation until the recipient
+                redeems a one-time claim link.
               </div>
               {error ? <p className="text-xs font-medium text-destructive">{error}</p> : null}
               <div className="flex flex-wrap justify-end gap-2">
@@ -159,7 +159,11 @@ export default function AdminCreateUserPage() {
                   <Link href="/admin/users">Cancel</Link>
                 </Button>
                 <Button type="submit" disabled={saving}>
-                  {saving ? <Loader2 className="size-4 animate-spin" /> : <UserPlus className="size-4" />}
+                  {saving ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <UserPlus className="size-4" />
+                  )}
                   Create account
                 </Button>
               </div>
@@ -203,7 +207,13 @@ export default function AdminCreateUserPage() {
             <p className="mt-2 text-[0.65rem] text-muted-foreground">
               Expires {result ? new Date(result.claimExpiresAt).toLocaleString() : ''}
             </p>
-            <Button type="button" size="sm" variant="outline" className="mt-3" onClick={() => void copy()}>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="mt-3"
+              onClick={() => void copy()}
+            >
               {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
               {copied ? 'Copied' : 'Copy claim link'}
             </Button>

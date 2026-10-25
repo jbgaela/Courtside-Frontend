@@ -81,8 +81,9 @@ export default function AdminRegistrationsPage() {
                     {tab.label}
                     {tab.value ? (
                       <span className={active ? 'text-white/60' : 'text-muted-foreground/70'}>
-                        {registrations.data?.meta.counts[tab.value.toLowerCase() as 'pending' | 'approved' | 'rejected'] ??
-                          0}
+                        {registrations.data?.meta.counts[
+                          tab.value.toLowerCase() as 'pending' | 'approved' | 'rejected'
+                        ] ?? 0}
                       </span>
                     ) : null}
                   </button>
@@ -141,7 +142,9 @@ export default function AdminRegistrationsPage() {
                         <Avatar name={registration.name} size="sm" />
                         <div className="min-w-0">
                           <p className="truncate text-sm font-bold">{registration.name}</p>
-                          <p className="truncate text-xs text-muted-foreground">{registration.email}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {registration.email}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -149,7 +152,9 @@ export default function AdminRegistrationsPage() {
                       {registration.skillRating.toFixed(2)}
                     </td>
                     <td className="px-4 py-3">
-                      <p className="text-xs font-medium">{relativeTime(registration.submittedAt)}</p>
+                      <p className="text-xs font-medium">
+                        {relativeTime(registration.submittedAt)}
+                      </p>
                       <p className="text-[0.65rem] text-muted-foreground">
                         {formatDateTime(registration.submittedAt)}
                       </p>
@@ -208,5 +213,3 @@ export default function AdminRegistrationsPage() {
     </div>
   );
 }
-
-

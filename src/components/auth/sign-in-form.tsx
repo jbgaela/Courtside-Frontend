@@ -30,7 +30,9 @@ export function SignInForm({ next }: { next?: string }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState<'form' | 'owner' | 'player' | 'admin' | 'mfa' | null>(null);
+  const [loading, setLoading] = useState<'form' | 'owner' | 'player' | 'admin' | 'mfa' | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [mfaRequired, setMfaRequired] = useState(false);
   const [mfaCode, setMfaCode] = useState('');
@@ -87,10 +89,9 @@ export function SignInForm({ next }: { next?: string }) {
     setLoading('mfa');
     setError(null);
     try {
-      const response = await api.post<{ user: Me; csrfToken: string }>(
-        '/api/v1/auth/mfa/verify',
-        { code: mfaCode },
-      );
+      const response = await api.post<{ user: Me; csrfToken: string }>('/api/v1/auth/mfa/verify', {
+        code: mfaCode,
+      });
       setMe(response.user);
       toast.success('Identity verified');
       router.replace(response.user.platformRole === 'SUPER_ADMIN' ? '/admin' : '/app');

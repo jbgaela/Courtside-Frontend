@@ -4,15 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  CheckCircle2,
-  Clock3,
-  Loader2,
-  RefreshCw,
-  Send,
-  ShieldCheck,
-  XCircle,
-} from 'lucide-react';
+import { CheckCircle2, Clock3, Loader2, RefreshCw, Send, ShieldCheck, XCircle } from 'lucide-react';
 import { ApiError, api, setCsrfToken } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -152,7 +144,11 @@ export function RegistrationStatusView() {
           Reconsideration is handled by an administrator. Contact your club or PickleQueue support
           and include the email address you registered with.
         </div>
-        <Button variant="outline" className="mt-5 w-full" onClick={() => void statusQuery.refetch()}>
+        <Button
+          variant="outline"
+          className="mt-5 w-full"
+          onClick={() => void statusQuery.refetch()}
+        >
           <RefreshCw className="size-4" /> Check again
         </Button>
         <Button

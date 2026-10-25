@@ -235,9 +235,7 @@ export default function AdminOverviewPage() {
             </span>
           </div>
           <div className="mt-4 flex flex-wrap gap-3 text-[0.65rem] text-muted-foreground">
-            <span>
-              Last opened {formatDateTime(new Date().toISOString())}
-            </span>
+            <span>Last opened {formatDateTime(new Date().toISOString())}</span>
             {recentPending[0] ? (
               <span className="flex items-center gap-1">
                 Oldest pending <RegistrationStatusBadge status="PENDING" />{' '}

@@ -150,7 +150,11 @@ export function ClaimAccountForm({ initialToken }: { initialToken?: string }) {
         </label>
         {error ? <p className="text-xs font-medium text-destructive">{error}</p> : null}
         <Button type="submit" className="w-full" size="lg" disabled={loading}>
-          {loading ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
+          {loading ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <CheckCircle2 className="size-4" />
+          )}
           Activate account
         </Button>
       </form>

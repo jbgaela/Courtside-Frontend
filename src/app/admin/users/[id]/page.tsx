@@ -233,7 +233,8 @@ export default function AdminUserDetailPage() {
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">{data.email}</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Account created {formatDateTime(data.createdAt)} · {relativeTime(data.createdAt)}
+                    Account created {formatDateTime(data.createdAt)} ·{' '}
+                    {relativeTime(data.createdAt)}
                   </p>
                 </div>
               </div>
@@ -308,7 +309,10 @@ export default function AdminUserDetailPage() {
               ) : (
                 <div className="mt-4 divide-y divide-border rounded-2xl border border-border">
                   {data.memberships.map((membership) => (
-                    <div key={membership.id} className="flex items-center justify-between gap-3 p-3.5">
+                    <div
+                      key={membership.id}
+                      className="flex items-center justify-between gap-3 p-3.5"
+                    >
                       <div>
                         <p className="text-sm font-semibold">{membership.clubName}</p>
                         <p className="text-[0.68rem] text-muted-foreground">
@@ -324,8 +328,8 @@ export default function AdminUserDetailPage() {
               )}
               {data.ownedClubs.length > 0 ? (
                 <div className="mt-4 rounded-xl border border-[#f1dfb9] bg-[#fbf0d9] p-3 text-xs text-[#8a5a0b]">
-                  Active club owner: {data.ownedClubs.map((club) => club.name).join(', ')}. Ownership
-                  must be transferred before deletion.
+                  Active club owner: {data.ownedClubs.map((club) => club.name).join(', ')}.
+                  Ownership must be transferred before deletion.
                 </div>
               ) : null}
             </CardContent>
@@ -414,11 +418,7 @@ export default function AdminUserDetailPage() {
             </p>
             <div className="mt-5 space-y-2">
               {data.accountStatus === 'SUSPENDED' ? (
-                <Button
-                  className="w-full"
-                  onClick={reactivate}
-                  disabled={working}
-                >
+                <Button className="w-full" onClick={reactivate} disabled={working}>
                   <RotateCcw className="size-4" /> Reactivate account
                 </Button>
               ) : data.accountStatus === 'DELETED' ? (
@@ -436,11 +436,22 @@ export default function AdminUserDetailPage() {
                 </Button>
               )}
               {data.accountStatus === 'APPROVED_PENDING_ACTIVATION' ? (
-                <Button variant="outline" className="w-full" onClick={issueClaim} disabled={working}>
-                  <KeyRound className="size-4" /> {data.claimPending ? 'Replace claim link' : 'Generate claim link'}
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={issueClaim}
+                  disabled={working}
+                >
+                  <KeyRound className="size-4" />{' '}
+                  {data.claimPending ? 'Replace claim link' : 'Generate claim link'}
                 </Button>
               ) : null}
-              <Button variant="outline" className="w-full" onClick={issueRecovery} disabled={working}>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={issueRecovery}
+                disabled={working}
+              >
                 <KeyRound className="size-4" /> Generate recovery link
               </Button>
               <Button
@@ -528,7 +539,11 @@ export default function AdminUserDetailPage() {
               Cancel
             </Button>
             <Button variant="destructive" onClick={remove} disabled={working}>
-              {working ? <Loader2 className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+              {working ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Trash2 className="size-4" />
+              )}
               Delete account
             </Button>
           </DialogFooter>
@@ -549,7 +564,13 @@ export default function AdminUserDetailPage() {
             <p className="mt-2 text-[0.65rem] text-muted-foreground">
               Expires {oneTimeExpiry ? new Date(oneTimeExpiry).toLocaleString() : ''}
             </p>
-            <Button type="button" size="sm" variant="outline" className="mt-3" onClick={() => void copyLink()}>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="mt-3"
+              onClick={() => void copyLink()}
+            >
               {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
               {copied ? 'Copied' : 'Copy link'}
             </Button>
@@ -560,11 +581,7 @@ export default function AdminUserDetailPage() {
         </DialogContent>
       </Dialog>
 
-      <AdminReauthDialog
-        open={reauthOpen}
-        onOpenChange={setReauthOpen}
-        onSuccess={afterReauth}
-      />
+      <AdminReauthDialog open={reauthOpen} onOpenChange={setReauthOpen} onSuccess={afterReauth} />
     </div>
   );
 }

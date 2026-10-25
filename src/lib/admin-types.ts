@@ -138,4 +138,3 @@ export interface AdminRecoveryResult {
   expiresAt: string;
   path: string;
 }
-

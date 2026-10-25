@@ -9,7 +9,9 @@ export default function TermsPage() {
       <Link href="/" aria-label="PickleQueue home">
         <Logo />
       </Link>
-      <h1 className="mt-10 font-display text-4xl font-extrabold tracking-tight">Terms of Service</h1>
+      <h1 className="mt-10 font-display text-4xl font-extrabold tracking-tight">
+        Terms of Service
+      </h1>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         PickleQueue is a club and open-play queueing service. Use your own account, provide accurate
         information and follow your club&apos;s rules. New accounts require administrator approval
@@ -18,8 +20,8 @@ export default function TermsPage() {
       <h2 className="mt-8 font-display text-xl font-bold">Accounts and access</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         Administrators may approve, reject, suspend or close accounts for policy, safety or
-        operational reasons. Platform administration is separate from club membership. Club roles
-        do not grant access to platform account management.
+        operational reasons. Platform administration is separate from club membership. Club roles do
+        not grant access to platform account management.
       </p>
       <h2 className="mt-8 font-display text-xl font-bold">Fair play</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">

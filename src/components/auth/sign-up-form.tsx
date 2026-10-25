@@ -182,7 +182,11 @@ export function SignUpForm() {
         ) : null}
 
         <Button type="submit" className="w-full" size="lg" disabled={loading}>
-          {loading ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
+          {loading ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <CheckCircle2 className="size-4" />
+          )}
           Create account
         </Button>
         <p className="text-center text-[0.65rem] leading-relaxed text-muted-foreground">

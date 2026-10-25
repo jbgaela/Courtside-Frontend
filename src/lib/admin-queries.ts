@@ -50,9 +50,7 @@ export function useAdminRegistrations(params: {
   return useQuery({
     queryKey: adminQueryKeys.registrations(normalized),
     queryFn: () =>
-      api.get<AdminRegistrationList>(
-        `/api/v1/admin/registrations${queryString(normalized)}`,
-      ),
+      api.get<AdminRegistrationList>(`/api/v1/admin/registrations${queryString(normalized)}`),
   });
 }
 

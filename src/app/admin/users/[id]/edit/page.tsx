@@ -29,12 +29,8 @@ function EditUserForm({ user }: { user: AdminUserDetail }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [name, setName] = React.useState(user.name);
-  const [displayName, setDisplayName] = React.useState(
-    user.profile?.displayName ?? user.name,
-  );
-  const [skillRating, setSkillRating] = React.useState(
-    String(user.profile?.skillRating ?? 3),
-  );
+  const [displayName, setDisplayName] = React.useState(user.profile?.displayName ?? user.name);
+  const [skillRating, setSkillRating] = React.useState(String(user.profile?.skillRating ?? 3));
   const [bio, setBio] = React.useState(user.profile?.bio ?? '');
   const [saving, setSaving] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);

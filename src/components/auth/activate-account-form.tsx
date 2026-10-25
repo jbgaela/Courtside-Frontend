@@ -191,7 +191,11 @@ export function ActivateAccountForm() {
           </div>
         ) : null}
         <Button type="submit" className="w-full" size="lg" disabled={saving}>
-          {saving ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
+          {saving ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <CheckCircle2 className="size-4" />
+          )}
           Activate my account
         </Button>
       </form>

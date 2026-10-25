@@ -140,7 +140,10 @@ export default function AdminAuditLogsPage() {
 
           <div className="grid gap-3 md:grid-cols-2 lg:hidden">
             {items.map((event) => (
-              <div key={event.id} className="rounded-2xl border border-border bg-card p-4 shadow-soft">
+              <div
+                key={event.id}
+                className="rounded-2xl border border-border bg-card p-4 shadow-soft"
+              >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="text-xs font-bold">{event.action}</p>
