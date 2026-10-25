@@ -1,7 +1,7 @@
 /* PickleQueue service worker — app shell + explicit offline fallback.
  * API responses and authenticated mutations are never cached.
  */
-const VERSION = 'picklequeue-v2';
+const VERSION = 'picklequeue-v3';
 const APP_SHELL = [
   '/',
   '/offline',
@@ -27,7 +27,14 @@ function isPrivatePath(pathname) {
     pathname.startsWith('/app/') ||
     pathname === '/manage' ||
     pathname.startsWith('/manage/') ||
-    pathname.startsWith('/check-in/')
+    pathname === '/admin' ||
+    pathname.startsWith('/admin/') ||
+    pathname.startsWith('/check-in/') ||
+    pathname === '/registration-status' ||
+    pathname === '/activate' ||
+    pathname === '/claim-account' ||
+    pathname === '/recover-account' ||
+    pathname === '/mfa-setup'
   );
 }
 

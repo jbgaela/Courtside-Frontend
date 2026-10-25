@@ -83,15 +83,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </div>
 
       <div className="flex min-h-dvh flex-col bg-background">
-        <header className="flex items-center justify-between px-5 py-5 sm:px-8 lg:hidden">
-          <Link href="/" aria-label="PickleQueue home">
-            <Logo />
-          </Link>
-          <Link
-            href="/public/sessions/s_riverside_saturday"
-            className="text-xs font-semibold text-primary"
-          >
-            Watch live
+        <header className="flex items-center px-4 py-4 sm:px-8 lg:hidden">
+          <Link href="/" aria-label="PickleQueue home" className="min-w-0">
+            <Logo compact />
           </Link>
         </header>
         <div className="flex flex-1 items-center justify-center px-4 py-8 sm:px-8 lg:px-12">

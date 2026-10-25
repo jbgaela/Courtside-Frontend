@@ -50,10 +50,14 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div className={cn('mb-3 flex items-end justify-between gap-3', className)}>
-      <div>
-        <h2 className="font-display text-lg font-bold tracking-tight sm:text-xl">{title}</h2>
-        {description ? <p className="mt-0.5 text-sm text-muted-foreground">{description}</p> : null}
+    <div className={cn('mb-3 flex flex-wrap items-end justify-between gap-3', className)}>
+      <div className="min-w-0">
+        <h2 className="break-words font-display text-lg font-bold tracking-tight sm:text-xl">
+          {title}
+        </h2>
+        {description ? (
+          <p className="mt-0.5 break-words text-sm text-muted-foreground">{description}</p>
+        ) : null}
       </div>
       {action}
     </div>

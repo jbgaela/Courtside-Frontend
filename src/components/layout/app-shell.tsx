@@ -14,6 +14,7 @@ import {
   LogOut,
   MoreHorizontal,
   Radio,
+  ShieldCheck,
   Trophy,
   User,
 } from 'lucide-react';
@@ -99,6 +100,7 @@ export function AppShell({
   const router = useRouter();
   const { me, logout } = useAuth();
   const isAdmin = useIsAdmin();
+  const isSuperAdmin = me?.platformRole === 'SUPER_ADMIN';
   const nav = mode === 'manage' ? manageNav : playerNav;
   const adminClubs =
     me?.memberships.filter(
@@ -190,6 +192,13 @@ export function AppShell({
                 <LogOut className="size-4" />
               </button>
             </div>
+            {isSuperAdmin ? (
+              <Button asChild variant="dark" size="sm" className="w-full">
+                <Link href="/admin">
+                  <ShieldCheck className="size-3.5" /> Super Admin
+                </Link>
+              </Button>
+            ) : null}
             {isAdmin ? (
               <Button asChild variant="outline" size="sm" className="w-full">
                 <Link href={mode === 'manage' ? '/app' : '/manage'}>
@@ -206,6 +215,13 @@ export function AppShell({
             <Logo compact />
           </Link>
           <div className="flex items-center gap-2">
+            {isSuperAdmin ? (
+              <Button asChild variant="ghost" size="icon-sm" aria-label="Super Admin">
+                <Link href="/admin">
+                  <ShieldCheck className="size-4" />
+                </Link>
+              </Button>
+            ) : null}
             {isAdmin ? (
               <Button asChild variant="ghost" size="icon-sm" aria-label="Switch view">
                 <Link href={mode === 'manage' ? '/app' : '/manage'}>
