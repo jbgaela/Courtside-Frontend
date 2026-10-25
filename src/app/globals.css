@@ -1,0 +1,206 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Manrope Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-forest: var(--forest);
+  --color-forest-soft: var(--forest-soft);
+  --color-lime: var(--lime);
+  --color-lime-soft: var(--lime-soft);
+  --color-sand: var(--sand);
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 14px);
+
+  --shadow-soft: 0 1px 2px rgba(16, 36, 27, 0.04), 0 12px 32px -18px rgba(16, 36, 27, 0.18);
+  --shadow-lift: 0 2px 4px rgba(16, 36, 27, 0.05), 0 24px 48px -24px rgba(16, 36, 27, 0.25);
+}
+
+:root {
+  --background: #f4f6ef;
+  --foreground: #12251b;
+  --card: #ffffff;
+  --card-foreground: #12251b;
+  --primary: #164430;
+  --primary-foreground: #f7fbef;
+  --secondary: #e8eee2;
+  --secondary-foreground: #254232;
+  --accent: #c9f56a;
+  --accent-foreground: #18301d;
+  --muted: #edf1e8;
+  --muted-foreground: #556257;
+  --border: #dfe6d9;
+  --input: #d6dfcf;
+  --ring: #2f7a56;
+  --destructive: #b83a32;
+  --destructive-foreground: #fff8f6;
+  --success: #207a4e;
+  --warning: #b87314;
+  --info: #2d6c8e;
+  --forest: #0f3524;
+  --forest-soft: #1d543b;
+  --lime: #c9f56a;
+  --lime-soft: #e8fbbe;
+  --sand: #eef0e7;
+  --radius: 1rem;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--forest);
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.app-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #c7d2c2 transparent;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(22, 68, 48, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 68, 48, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.pickle-pattern {
+  background-image: radial-gradient(
+    circle at 25% 25%,
+    rgba(201, 245, 106, 0.18) 0 2px,
+    transparent 2.5px
+  );
+  background-size: 28px 28px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.live-dot {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise {
+  animation: rise 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
