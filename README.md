@@ -3,50 +3,85 @@
 Next.js 16 App Router PWA for PickleQueue: player queue, Queue Master live board,
 rally scoring, public scoreboard and offline fallback.
 
-This repository is the **frontend application** of the PickleQueue workspace. The
-workspace root also contains shared packages (`contracts`, `matchmaking`,
-`scoring`), end-to-end tests and documentation. Those shared packages are not
-inside this repository; use the workspace root as the unit of checkout.
+This repository is **self-contained**. The wire contract package it consumes
+(`@picklequeue/contracts`) is vendored under `packages/contracts` and built from
+this checkout. It does not require the Backend repository or an umbrella
+workspace to install, test, build or deploy.
+
+## Requirements
+
+- Node.js 22 LTS (minimum 20.9)
+- pnpm 10.17 (`corepack enable`)
+- A running PickleQueue API for live data (`NEXT_PUBLIC_API_URL`)
 
 ## Quick start
 
-From the PickleQueue workspace root:
-
 ```bash
+git clone https://github.com/jbgaela/Courtside-Frontend.git
+cd Courtside-Frontend
 pnpm install
-pnpm build:packages
-pnpm db:up
-pnpm db:push
-pnpm db:seed
-pnpm dev:web
+cp .env.example .env.local
+pnpm dev          # http://localhost:3000
 ```
 
-Web: `http://localhost:3000`  
-Public demo: `http://localhost:3000/public/sessions/s_riverside_saturday`
+The web app reads `.env.local`. `pnpm dev` and `pnpm build` build
+`packages/contracts` first, so no separate workspace step is needed.
 
-## Build and verify
+The API is a separate deployment. Point `NEXT_PUBLIC_API_URL` (browser) and
+`API_INTERNAL_URL` (server-side) at it. For the full stack locally, run the API
+repository on `http://localhost:4000`.
+
+## Verification
 
 ```bash
-pnpm --filter @picklequeue/web typecheck
-pnpm --filter @picklequeue/web lint
-pnpm --filter @picklequeue/web build
-pnpm test:e2e
+pnpm typegen
+pnpm typecheck
+pnpm lint
+pnpm test        # contracts package tests
+pnpm build
+pnpm format:check
 ```
 
-The E2E harness builds this app in production mode, starts the API and web app,
-and uses its own disposable MongoDB replica-set container. The container is
-removed after the run.
+## Layout
+
+```text
+src/app/                App Router routes and layouts
+src/components/         UI, auth, queue master and scoreboard components
+src/lib/                API client, auth context, types, query hooks
+src/hooks/              Shared client hooks
+public/                 PWA manifest, service worker, icons
+packages/contracts/     Vendored wire types, enums and config schemas
+```
+
+The contract package is a pnpm workspace member (see `pnpm-workspace.yaml`).
+Run `pnpm build:packages` after editing it.
 
 ## Demo accounts
 
-Password: `PickleQueue123!`
+Against the seeded development API. Password: `PickleQueue123!`
 
 - `owner@picklequeue.dev` — Queue Master console
 - `alex@picklequeue.dev` — player
 - `zoe@picklequeue.dev` — player
 - `jordan@picklequeue.dev` — Queue Master
 
-## Documentation
+## CI
 
-The full architecture, ADRs, API contract, testing evidence, operations and
-deployment runbooks live in the workspace root under `docs/`.
+`.github/workflows/ci.yml` runs types, lint, contract tests, the production
+build, formatting and the dependency audit on every push and pull request. It
+installs this repository only.
+
+## Deployment
+
+Install and build with the repository scripts:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm build
+pnpm start
+```
+
+`pnpm install` builds `packages/contracts` through `postinstall`, so a platform
+that invokes `next build` directly also works. Build-time public variables
+(`NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_APP_URL`) must be present during the build;
+`API_INTERNAL_URL` is used by server-side requests.
