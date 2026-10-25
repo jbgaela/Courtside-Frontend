@@ -7,6 +7,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
+import { safeInternalPath } from '@/lib/navigation';
 import type { Me } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Field, Input } from '@/components/ui/input';
@@ -37,11 +38,8 @@ export function SignInForm({ next }: { next?: string }) {
         `Welcome back, ${response.user.profile?.displayName ?? response.user.name.split(' ')[0]}`,
       );
       const target =
-        next && next.startsWith('/')
-          ? next
-          : response.user.memberships.some((m) => m.role !== 'PLAYER')
-            ? '/manage'
-            : '/app';
+        safeInternalPath(next) ??
+        (response.user.memberships.some((m) => m.role !== 'PLAYER') ? '/manage' : '/app');
       router.replace(target);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to sign in');

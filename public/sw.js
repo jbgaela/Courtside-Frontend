@@ -1,7 +1,7 @@
 /* PickleQueue service worker — app shell + explicit offline fallback.
  * API responses and authenticated mutations are never cached.
  */
-const VERSION = 'picklequeue-v1';
+const VERSION = 'picklequeue-v2';
 const APP_SHELL = [
   '/',
   '/offline',
@@ -21,6 +21,16 @@ self.addEventListener('install', (event) => {
   );
 });
 
+function isPrivatePath(pathname) {
+  return (
+    pathname === '/app' ||
+    pathname.startsWith('/app/') ||
+    pathname === '/manage' ||
+    pathname.startsWith('/manage/') ||
+    pathname.startsWith('/check-in/')
+  );
+}
+
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
@@ -30,6 +40,21 @@ self.addEventListener('activate', (event) => {
       )
       .then(() => self.clients.claim()),
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'CLEAR_PRIVATE_CACHES') {
+    event.waitUntil(
+      caches.open(VERSION).then(async (cache) => {
+        const requests = await cache.keys();
+        await Promise.all(
+          requests
+            .filter((request) => isPrivatePath(new URL(request.url).pathname))
+            .map((request) => cache.delete(request)),
+        );
+      }),
+    );
+  }
 });
 
 self.addEventListener('fetch', (event) => {
@@ -44,11 +69,13 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches
-            .open(VERSION)
-            .then((cache) => cache.put(request, copy))
-            .catch(() => {});
+          if (response.ok && !isPrivatePath(url.pathname)) {
+            const copy = response.clone();
+            caches
+              .open(VERSION)
+              .then((cache) => cache.put(request, copy))
+              .catch(() => {});
+          }
           return response;
         })
         .catch(async () => {
