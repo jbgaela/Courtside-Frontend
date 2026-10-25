@@ -18,7 +18,7 @@ export function ClubAdminNav({ clubId }: { clubId: string }) {
   const base = `/manage/clubs/${clubId}`;
   return (
     <nav
-      className="flex gap-1 overflow-x-auto rounded-full border border-border bg-card p-1 no-scrollbar"
+      className="flex flex-wrap gap-1 rounded-2xl border border-border bg-card p-1 sm:flex-nowrap sm:rounded-full"
       aria-label="Club management"
     >
       {links.map((link) => {
@@ -30,7 +30,7 @@ export function ClubAdminNav({ clubId }: { clubId: string }) {
             key={link.label}
             href={href}
             className={cn(
-              'inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold transition-colors',
+              'inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold transition-colors max-sm:h-11',
               active
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:bg-secondary',

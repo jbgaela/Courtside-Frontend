@@ -117,7 +117,11 @@ export function AppShell({
       <div className="min-h-dvh bg-background">
         <aside className="fixed inset-y-0 left-0 z-40 hidden w-[17.5rem] flex-col border-r border-border/80 bg-card lg:flex">
           <div className="px-5 pb-5 pt-6">
-            <Link href={mode === 'manage' ? '/manage' : '/app'} aria-label="PickleQueue home">
+            <Link
+              href={mode === 'manage' ? '/manage' : '/app'}
+              aria-label="PickleQueue home"
+              className="inline-flex min-h-11 items-center"
+            >
               <Logo />
             </Link>
           </div>
@@ -172,7 +176,9 @@ export function AppShell({
             <div className="flex items-center gap-3 rounded-2xl border border-border/80 p-3">
               <Avatar name={me?.profile?.displayName ?? me?.name ?? 'Player'} size="md" />
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-bold">{me?.profile?.displayName ?? me?.name}</p>
+                <p className="line-clamp-2 break-words text-sm font-bold leading-tight">
+                  {me?.profile?.displayName ?? me?.name}
+                </p>
                 <p className="text-[0.65rem] text-muted-foreground">
                   {mode === 'manage'
                     ? adminClubs[0]?.role === 'OWNER'
@@ -211,7 +217,11 @@ export function AppShell({
         </aside>
 
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border/70 bg-background/85 px-4 backdrop-blur-xl lg:hidden">
-          <Link href={mode === 'manage' ? '/manage' : '/app'} aria-label="PickleQueue home">
+          <Link
+            href={mode === 'manage' ? '/manage' : '/app'}
+            aria-label="PickleQueue home"
+            className="inline-flex min-h-11 items-center"
+          >
             <Logo compact />
           </Link>
           <div className="flex items-center gap-2">
@@ -231,7 +241,7 @@ export function AppShell({
             ) : null}
             <Link
               href="/app/profile"
-              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid size-11 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Profile"
             >
               <Avatar name={me?.profile?.displayName ?? me?.name ?? 'Player'} size="sm" />

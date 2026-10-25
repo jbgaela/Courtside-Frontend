@@ -12,7 +12,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="absolute -bottom-24 -left-10 size-[26rem] rounded-full border border-lime/10" />
 
         <div className="relative">
-          <Link href="/" aria-label="PickleQueue home">
+          <Link
+            href="/"
+            aria-label="PickleQueue home"
+            className="inline-flex min-h-11 items-center"
+          >
             <Logo tone="light" />
           </Link>
           <div className="mt-20 max-w-lg">
@@ -84,7 +88,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       <div className="flex min-h-dvh flex-col bg-background">
         <header className="flex items-center px-4 py-4 sm:px-8 lg:hidden">
-          <Link href="/" aria-label="PickleQueue home" className="min-w-0">
+          <Link
+            href="/"
+            aria-label="PickleQueue home"
+            className="inline-flex min-h-11 min-w-0 items-center"
+          >
             <Logo compact />
           </Link>
         </header>

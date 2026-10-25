@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -159,7 +159,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
           },
           { idempotencyKey: newIdempotencyKey('rotation') },
         ),
-      'Rotation committed â€” players are on court',
+      'Rotation committed — players are on court',
     );
   };
 
@@ -439,8 +439,8 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
       </div>
 
       {session.status === 'LIVE' ? (
-        <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
-          <div className="space-y-4">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)]">
+          <div className="min-w-0 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-xl font-bold">Courts</h2>
               <div className="flex items-center gap-2">
@@ -470,7 +470,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
             {live.isLoading ? (
               <div className="h-64 animate-pulse rounded-2xl bg-secondary/60" />
             ) : live.data ? (
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {live.data.courts.map((court) => (
                   <Card key={court.id} className="overflow-hidden">
                     <CardContent className="p-4">
@@ -492,13 +492,13 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                       {court.match ? (
                         <div className="mt-3 rounded-xl bg-secondary/50 p-3">
                           <div className="flex items-end justify-between gap-2">
-                            <div className="min-w-0 text-xs">
-                              <p className="truncate font-semibold">
+                            <div className="min-w-0 text-xs leading-snug">
+                              <p className="line-clamp-2 break-words font-semibold">
                                 {court.match.teams.A.map((player) => player.displayName).join(
                                   ' + ',
                                 )}
                               </p>
-                              <p className="mt-0.5 truncate text-muted-foreground">
+                              <p className="mt-1 line-clamp-2 break-words text-muted-foreground">
                                 {court.match.teams.B.map((player) => player.displayName).join(
                                   ' + ',
                                 )}
@@ -506,11 +506,11 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                             </div>
                             <div className="tabular font-display text-3xl font-extrabold">
                               {court.match.currentGame.a}
-                              <span className="mx-1 text-muted-foreground">â€“</span>
+                              <span className="mx-1 text-muted-foreground">–</span>
                               {court.match.currentGame.b}
                             </div>
                           </div>
-                          <div className="mt-3 flex gap-2">
+                          <div className="mt-3 flex flex-wrap gap-2">
                             {court.match.status === 'READY' ? (
                               <Button
                                 size="sm"
@@ -560,7 +560,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
             ) : null}
           </div>
 
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             <Card>
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
@@ -627,7 +627,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                         </div>
                         <div className="mt-2 space-y-1.5">
                           <div className="flex items-center justify-between gap-2">
-                            <p className="truncate text-xs font-semibold">
+                            <p className="line-clamp-2 break-words text-xs font-semibold leading-snug">
                               {assignment.teamA.map((player) => player.displayName).join(' + ')}
                             </p>
                             <span className="text-xs font-bold tabular">
@@ -635,7 +635,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-2">
-                            <p className="truncate text-xs font-semibold">
+                            <p className="line-clamp-2 break-words text-xs font-semibold leading-snug">
                               {assignment.teamB.map((player) => player.displayName).join(' + ')}
                             </p>
                             <span className="text-xs font-bold tabular">
@@ -645,7 +645,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                         </div>
                         {assignment.reasons.length > 0 ? (
                           <p className="mt-2 text-[0.6rem] leading-relaxed text-muted-foreground">
-                            {assignment.reasons.slice(0, 2).join(' Â· ')}
+                            {assignment.reasons.slice(0, 2).join(' · ')}
                           </p>
                         ) : null}
                       </div>
@@ -656,8 +656,8 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                       </div>
                     ) : null}
                     <div className="rounded-xl bg-secondary/60 p-3 text-[0.62rem] text-muted-foreground">
-                      {rotation.data.metrics.assignedPlayers} players Â· avg wait{' '}
-                      {rotation.data.metrics.averageWaitMinutes}m Â· max spread{' '}
+                      {rotation.data.metrics.assignedPlayers} players · avg wait{' '}
+                      {rotation.data.metrics.averageWaitMinutes}m · max spread{' '}
                       {rotation.data.metrics.averageSkillSpread}
                     </div>
                     {rotation.data.bench.length > 0 ? (
@@ -785,7 +785,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                   {
                     label: 'Enough players to go live',
                     done: checkedIn >= (session.format === 'SINGLES' ? 2 : 4),
-                    detail: `${checkedIn} checked in Â· minimum ${session.format === 'SINGLES' ? 2 : 4}`,
+                    detail: `${checkedIn} checked in · minimum ${session.format === 'SINGLES' ? 2 : 4}`,
                   },
                   {
                     label: 'Public page',
@@ -830,8 +830,8 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                   {registrations.data?.participants.length ??
                     registrations.data?.registrations.length ??
                     0}{' '}
-                  total Â· {registrations.data?.guests.length ?? 0} guest
-                  {(registrations.data?.guests.length ?? 0) === 1 ? '' : 's'} Â· {pending.length}{' '}
+                  total · {registrations.data?.guests.length ?? 0} guest
+                  {(registrations.data?.guests.length ?? 0) === 1 ? '' : 's'} · {pending.length}{' '}
                   pending approval
                 </p>
                 <Button asChild variant="outline" size="sm" className="mt-3 w-full">
@@ -854,15 +854,15 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-semibold">
-                            {match.court.name} Â· R{match.round}
+                            {match.court.name} · R{match.round}
                           </span>
                           <span className="tabular font-bold">
-                            {match.games[match.games.length - 1]?.a ?? 0}â€“
+                            {match.games[match.games.length - 1]?.a ?? 0}–
                             {match.games[match.games.length - 1]?.b ?? 0}
                           </span>
                         </div>
                         <p className="mt-0.5 text-[0.6rem] text-muted-foreground">
-                          Team {match.winnerTeam} won Â·{' '}
+                          Team {match.winnerTeam} won ·{' '}
                           {match.completedAt ? relativeTime(match.completedAt) : ''}
                         </p>
                       </Link>
@@ -910,7 +910,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                   >
                     {[...assignment.teamA, ...assignment.teamB].map((player) => (
                       <option key={player.userId} value={player.userId}>
-                        {player.displayName} Â· {player.skill.toFixed(2)} Â· {player.gamesPlayed}{' '}
+                        {player.displayName} · {player.skill.toFixed(2)} · {player.gamesPlayed}{' '}
                         games
                       </option>
                     ))}
@@ -924,7 +924,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                   >
                     {bench.map((entry) => (
                       <option key={entry.userId} value={entry.userId}>
-                        {entry.displayName} Â· {entry.gamesPlayed} games Â· {entry.reason}
+                        {entry.displayName} · {entry.gamesPlayed} games · {entry.reason}
                       </option>
                     ))}
                   </Select>
@@ -971,7 +971,7 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
               id="cancelReason"
               value={cancelReason}
               onChange={(event) => setCancelReason(event.target.value)}
-              placeholder="Weather, venue closureâ€¦"
+              placeholder="Weather, venue closure…"
               maxLength={300}
             />
           </Field>

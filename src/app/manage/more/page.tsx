@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -56,13 +56,13 @@ export default function ManageMorePage() {
 
       <Card>
         <CardContent className="p-5">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Avatar name={me?.profile?.displayName ?? me?.name ?? 'Queue Master'} size="lg" />
-            <div className="min-w-0 flex-1">
+            <div className="min-w-[10rem] flex-1">
               <p className="truncate font-display text-lg font-bold">
                 {me?.profile?.displayName ?? me?.name}
               </p>
-              <p className="text-xs text-muted-foreground">{me?.email}</p>
+              <p className="truncate text-xs text-muted-foreground">{me?.email}</p>
             </div>
             <Badge tone="lime">Queue Master</Badge>
           </div>
@@ -124,7 +124,7 @@ export default function ManageMorePage() {
           </div>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             Install the PWA to open the live board full-screen on a tablet. Offline mode is
-            read-only â€” score submission always requires a connection.
+            read-only — score submission always requires a connection.
           </p>
           <Button
             variant="outline"
@@ -144,12 +144,12 @@ export default function ManageMorePage() {
       <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <ShieldCheck className="size-4 text-[#47671b]" />
-          API v1 Â· secure http-only sessions
+          API v1 · secure http-only sessions
         </div>
         <Link
           href="/public/sessions/s_riverside_saturday"
           target="_blank"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+          className="inline-flex min-h-6 items-center gap-1 text-xs font-semibold text-primary hover:underline"
         >
           Public demo <ExternalLink className="size-3" />
         </Link>

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -175,7 +175,7 @@ export default function SessionSettingsPage({
       <PageHeader
         eyebrow="Session settings"
         title={session.name}
-        description={`${formatDay(session.startsAt, session.timezone)} Â· ${formatRange(session.startsAt, session.endsAt, session.timezone)}`}
+        description={`${formatDay(session.startsAt, session.timezone)} · ${formatRange(session.startsAt, session.endsAt, session.timezone)}`}
         actions={
           <Button variant="outline" size="sm" onClick={() => void publish()} disabled={locked}>
             <Share2 className="size-3.5" /> {session.published ? 'Unpublish' : 'Publish'}
@@ -341,7 +341,7 @@ export default function SessionSettingsPage({
                 <h2 className="font-display text-lg font-bold">Rotation rules</h2>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <Field
-                    label={`Preferred spread Â· ${preferredSpread.toFixed(2)}`}
+                    label={`Preferred spread · ${preferredSpread.toFixed(2)}`}
                     htmlFor="preferred"
                   >
                     <input
@@ -355,7 +355,7 @@ export default function SessionSettingsPage({
                       className="w-full accent-[#164430]"
                     />
                   </Field>
-                  <Field label={`Maximum spread Â· ${maxSpread.toFixed(2)}`} htmlFor="max">
+                  <Field label={`Maximum spread · ${maxSpread.toFixed(2)}`} htmlFor="max">
                     <input
                       id="max"
                       type="range"

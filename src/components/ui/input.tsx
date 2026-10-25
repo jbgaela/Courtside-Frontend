@@ -1,4 +1,4 @@
-﻿import * as React from 'react';
+import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 export const Input = React.forwardRef<
@@ -77,11 +77,19 @@ export function Field({
   htmlFor?: string;
 }) {
   return (
-    <div className={cn('space-y-1.5', className)}>
+    <div data-ui="field" className={cn('space-y-1.5', className)}>
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
-      {hint && !error ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
-      {error ? <p className="text-xs font-medium text-destructive">{error}</p> : null}
+      {hint && !error ? (
+        <p data-ui="field-hint" className="text-xs leading-relaxed text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p data-ui="field-error" className="text-xs font-medium text-destructive">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

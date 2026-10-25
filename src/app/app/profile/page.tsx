@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -176,7 +176,7 @@ export default function ProfilePage() {
                 </Field>
               </div>
               <div className="grid gap-4 sm:grid-cols-[0.4fr_0.6fr]">
-                <Field label="Skill rating" htmlFor="skill" hint="1.00 â€“ 7.00">
+                <Field label="Skill rating" htmlFor="skill" hint="1.00 – 7.00">
                   <Input
                     id="skill"
                     type="number"
@@ -204,7 +204,7 @@ export default function ProfilePage() {
                   Skill changes are recorded in your rating history.
                 </p>
                 <Button type="submit" disabled={saving}>
-                  <Save className="size-4" /> {saving ? 'Savingâ€¦' : 'Save changes'}
+                  <Save className="size-4" /> {saving ? 'Saving…' : 'Save changes'}
                 </Button>
               </div>
             </form>

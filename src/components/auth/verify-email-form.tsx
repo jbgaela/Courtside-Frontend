@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -58,7 +58,7 @@ export function VerifyEmailForm({ initialToken }: { initialToken?: string }) {
           <CheckCircle2 className="size-7" />
         </span>
         <h1 className="mt-4 font-display text-2xl font-extrabold">You are verified</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Taking you to your dashboardâ€¦</p>
+        <p className="mt-2 text-sm text-muted-foreground">Taking you to your dashboard…</p>
       </div>
     );
   }
@@ -156,7 +156,7 @@ export function VerifyEmailForm({ initialToken }: { initialToken?: string }) {
         <Link href="/app" className="font-semibold text-primary hover:underline">
           Skip for now
         </Link>{' '}
-        Â· some actions stay locked until verified.
+        · some actions stay locked until verified.
       </p>
     </div>
   );

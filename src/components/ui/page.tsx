@@ -16,6 +16,7 @@ export function PageHeader({
 }) {
   return (
     <div
+      data-ui="page-header"
       className={cn('flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between', className)}
     >
       <div className="min-w-0">
@@ -24,11 +25,17 @@ export function PageHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="text-balance font-display text-[1.8rem] font-extrabold leading-[1.1] tracking-[-0.035em] sm:text-4xl">
+        <h1
+          data-ui="page-title"
+          className="text-balance font-display text-[1.8rem] font-extrabold leading-[1.1] tracking-[-0.035em] sm:text-4xl"
+        >
           {title}
         </h1>
         {description ? (
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
+          <p
+            data-ui="page-description"
+            className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]"
+          >
             {description}
           </p>
         ) : null}
@@ -50,13 +57,24 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div className={cn('mb-3 flex flex-wrap items-end justify-between gap-3', className)}>
+    <div
+      data-ui="section-heading"
+      className={cn('mb-4 flex flex-wrap items-end justify-between gap-3', className)}
+    >
       <div className="min-w-0">
-        <h2 className="break-words font-display text-lg font-bold tracking-tight sm:text-xl">
+        <h2
+          data-ui="section-title"
+          className="break-words font-display text-lg font-bold tracking-tight sm:text-xl"
+        >
           {title}
         </h2>
         {description ? (
-          <p className="mt-0.5 break-words text-sm text-muted-foreground">{description}</p>
+          <p
+            data-ui="section-description"
+            className="mt-2 break-words text-sm leading-relaxed text-muted-foreground"
+          >
+            {description}
+          </p>
         ) : null}
       </div>
       {action}
@@ -81,20 +99,33 @@ export function StatCard({
 }) {
   return (
     <div
+      data-ui="stat-card"
       className={cn(
-        'rounded-2xl border p-4',
+        'min-w-0 rounded-2xl border p-4',
         accent ? 'border-[#d9edb2] bg-lime-soft/60' : 'border-border bg-card',
         className,
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+        <p
+          data-ui="stat-label"
+          className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+        >
           {label}
         </p>
         {icon ? <span className="text-primary/60">{icon}</span> : null}
       </div>
-      <p className="mt-2 font-display text-2xl font-extrabold tabular tracking-tight">{value}</p>
-      {hint ? <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p> : null}
+      <p
+        data-ui="stat-value"
+        className="mt-2.5 font-display text-2xl font-extrabold tabular tracking-tight"
+      >
+        {value}
+      </p>
+      {hint ? (
+        <p data-ui="stat-hint" className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
     </div>
   );
 }

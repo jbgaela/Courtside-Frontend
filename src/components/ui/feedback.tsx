@@ -42,6 +42,7 @@ export function EmptyState({
 }) {
   return (
     <div
+      data-ui="empty-state"
       className={cn(
         'flex flex-col items-center justify-center rounded-[1.35rem] border border-dashed border-border bg-card/60 px-6 py-12 text-center',
         className,
@@ -77,6 +78,7 @@ export function ErrorState({
   const offline = message?.toLowerCase().includes('offline');
   return (
     <div
+      data-ui="error-state"
       className={cn('rounded-[1.35rem] border border-[#f0d8d4] bg-[#fdf6f5] p-6', className)}
       role="alert"
     >
@@ -86,7 +88,7 @@ export function ErrorState({
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="font-semibold text-[#7f2a24]">{title}</h3>
-          <p className="mt-1 text-sm leading-relaxed text-[#8f4a44]">
+          <p className="mt-1.5 text-sm leading-relaxed text-[#8f4a44]">
             {message ?? 'Check your connection and try again.'}
           </p>
           {onRetry ? (

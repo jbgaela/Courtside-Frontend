@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useQueryClient } from '@tanstack/react-query';
@@ -59,12 +59,14 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
 
   return (
     <Card className="overflow-hidden">
-      <div className="flex items-center justify-between gap-3 bg-forest px-5 py-4 text-white">
+      <div className="flex items-center justify-between gap-3 bg-forest px-5 pb-5 pt-4 text-white">
         <div className="min-w-0">
-          <p className="truncate text-[0.62rem] font-bold uppercase tracking-[0.16em] text-lime">
+          <p className="line-clamp-2 break-words text-[0.62rem] font-bold uppercase leading-relaxed tracking-[0.14em] text-lime">
             {session.club?.name ?? 'Club session'}
           </p>
-          <h2 className="mt-0.5 truncate font-display text-lg font-bold">{session.name}</h2>
+          <h2 className="mt-1 truncate font-display text-lg font-bold leading-snug">
+            {session.name}
+          </h2>
         </div>
         <LiveBadge />
       </div>
@@ -90,13 +92,13 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                 <span className="font-display text-4xl font-extrabold leading-none">
                   {myMatch.currentGame.a}
                 </span>
-                <span className="pb-1 text-muted-foreground">â€“</span>
+                <span className="pb-1 text-muted-foreground">–</span>
                 <span className="font-display text-4xl font-extrabold leading-none">
                   {myMatch.currentGame.b}
                 </span>
               </div>
             </div>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
               <Button asChild size="sm">
                 <Link href={`/app/matches/${myMatch.id}`}>
                   Open match <ArrowRight className="size-3.5" />
@@ -120,7 +122,7 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                       ? `#${self.position}`
                       : self.state === 'PLAYING'
                         ? 'On court'
-                        : 'â€”'}
+                        : '—'}
                   </span>
                   {self.estimatedWaitMinutes !== null && self.position ? (
                     <span className="rounded-full bg-lime-soft px-2.5 py-1 text-[0.65rem] font-bold text-[#47641d]">
@@ -132,7 +134,7 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                 </div>
                 <p className="mt-1.5 text-xs text-muted-foreground">
                   {self.state === 'WAITING'
-                    ? `Waiting ${self.waitingMinutes} min Â· ${self.gamesPlayed} game${self.gamesPlayed === 1 ? '' : 's'} played`
+                    ? `Waiting ${self.waitingMinutes} min · ${self.gamesPlayed} game${self.gamesPlayed === 1 ? '' : 's'} played`
                     : self.state === 'PAUSED'
                       ? 'Your queue participation is paused'
                       : 'Waiting for the next rotation'}
@@ -149,7 +151,7 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                 />
               </div>
             </div>
-            <div className="mt-5 flex gap-2">
+            <div className="mt-5 flex flex-wrap gap-2">
               <Button asChild size="sm">
                 <Link href="/app/queue">
                   <ListOrdered className="size-3.5" /> View my queue
@@ -273,8 +275,8 @@ export default function PlayerHomePage() {
         }
       />
 
-      <div className="grid gap-5 lg:grid-cols-[1.4fr_0.6fr]">
-        <div className="space-y-5">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.6fr)]">
+        <div className="min-w-0 space-y-5">
           {upcoming.isLoading ? (
             <Card className="h-64 animate-pulse bg-card">
               <div className="h-full rounded-[1.35rem] bg-secondary/50" />
@@ -283,12 +285,12 @@ export default function PlayerHomePage() {
             <LiveSection sessionId={liveSession.sessionId} userId={me.id} />
           ) : (
             <Card className="overflow-hidden">
-              <div className="flex items-center justify-between bg-forest px-5 py-4 text-white">
-                <div>
+              <div className="flex items-center justify-between gap-3 bg-forest px-5 pb-5 pt-4 text-white">
+                <div className="min-w-0">
                   <p className="text-[0.62rem] font-bold uppercase tracking-[0.16em] text-lime">
                     Next up
                   </p>
-                  <h2 className="font-display text-lg font-bold">
+                  <h2 className="mt-1 line-clamp-2 break-words font-display text-lg font-bold leading-snug">
                     {checkInSession ? checkInSession.name : 'No live session right now'}
                   </h2>
                 </div>
@@ -384,7 +386,7 @@ export default function PlayerHomePage() {
                   >
                     <div>
                       <p className="text-sm font-bold">{court.name}</p>
-                      <p className="text-[0.65rem] text-muted-foreground">
+                      <p className="mt-0.5 text-[0.68rem] text-muted-foreground">
                         {court.status === 'IN_USE' ? 'In play' : 'Open'}
                       </p>
                     </div>
@@ -398,34 +400,36 @@ export default function PlayerHomePage() {
           ) : null}
         </div>
 
-        <aside className="space-y-5">
+        <aside className="min-w-0 space-y-5">
           <Card>
             <CardContent className="p-5">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-3">
                 <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                   Player record
                 </p>
-                <Trophy className="size-4 text-[#47671b]" />
+                <Trophy className="size-4 shrink-0 text-[#47671b]" />
               </div>
               {stats.isLoading ? (
-                <div className="mt-3 h-24 animate-pulse rounded-xl bg-secondary/60" />
+                <div className="mt-4 h-24 animate-pulse rounded-xl bg-secondary/60" />
               ) : (
                 <>
-                  <div className="mt-3 flex items-baseline gap-1">
-                    <span className="font-display text-4xl font-extrabold tabular">
+                  <div className="mt-4 flex items-end gap-2">
+                    <span className="font-display text-4xl font-extrabold leading-none tabular">
                       {stats.data?.winRate ?? 0}%
                     </span>
-                    <span className="text-xs font-semibold text-muted-foreground">win rate</span>
+                    <span className="pb-1 text-xs font-semibold leading-none text-muted-foreground">
+                      win rate
+                    </span>
                   </div>
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+                  <div className="mt-4 grid grid-cols-3 gap-2 text-center">
                     {[
                       ['Games', stats.data?.matchesPlayed ?? 0],
                       ['Wins', stats.data?.wins ?? 0],
                       ['Sessions', stats.data?.sessionsAttended ?? 0],
                     ].map(([label, value]) => (
-                      <div key={label} className="rounded-xl bg-secondary/70 py-2">
-                        <p className="font-display text-base font-bold tabular">{value}</p>
-                        <p className="text-[0.55rem] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <div key={label} className="rounded-xl bg-secondary/70 px-1.5 py-2.5">
+                        <p className="font-display text-lg font-bold tabular">{value}</p>
+                        <p className="mt-0.5 text-[0.62rem] font-semibold uppercase tracking-wide text-muted-foreground">
                           {label}
                         </p>
                       </div>
@@ -433,7 +437,7 @@ export default function PlayerHomePage() {
                   </div>
                 </>
               )}
-              <Button asChild variant="outline" size="sm" className="mt-4 w-full">
+              <Button asChild variant="outline" size="sm" className="mt-5 w-full">
                 <Link href="/app/profile">View profile & stats</Link>
               </Button>
             </CardContent>
@@ -488,12 +492,12 @@ export default function PlayerHomePage() {
               How rotation works
             </p>
             <p className="mt-1 text-xs leading-relaxed text-[#3e5716]">
-              Fewest games first. Then the longest wait. Skill and balance decide the teams â€”
-              never who gets left out.
+              Fewest games first. Then the longest wait. Skill and balance decide the teams — never
+              who gets left out.
             </p>
             <Link
               href="/app/queue"
-              className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#385513] hover:underline"
+              className="mt-3 inline-flex min-h-6 items-center gap-1 text-xs font-bold text-[#385513] hover:underline"
             >
               Open my queue <ArrowRight className="size-3" />
             </Link>
@@ -511,7 +515,7 @@ export default function PlayerHomePage() {
               <div>
                 <p className="text-sm font-bold">Session timing</p>
                 <p className="text-xs text-muted-foreground">
-                  {formatShortDay(upcoming.data[0]!.startsAt, upcoming.data[0]!.timezone)} Â·{' '}
+                  {formatShortDay(upcoming.data[0]!.startsAt, upcoming.data[0]!.timezone)} ·{' '}
                   {formatRange(
                     upcoming.data[0]!.startsAt,
                     upcoming.data[0]!.endsAt,

@@ -21,7 +21,7 @@ export function SessionCard({
     <Link
       href={href}
       className={cn(
-        'group block rounded-[1.35rem] border border-border bg-card p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift sm:p-5',
+        'group block min-w-0 rounded-[1.35rem] border border-border bg-card p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift sm:p-5',
         className,
       )}
     >
@@ -31,10 +31,10 @@ export function SessionCard({
             <SessionStatusBadge status={session.status} />
             {session.published ? <Badge tone="neutral">Public</Badge> : null}
           </div>
-          <h3 className="mt-2 truncate font-display text-lg font-bold tracking-tight">
+          <h3 className="mt-2 line-clamp-2 break-words font-display text-lg font-bold tracking-tight">
             {session.name}
           </h3>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             {formatShortDay(session.startsAt, session.timezone)} ·{' '}
             {formatRange(session.startsAt, session.endsAt, session.timezone)}
           </p>
@@ -73,7 +73,7 @@ export function UpcomingSessionCard({
     <Link
       href={href}
       className={cn(
-        'group block rounded-[1.35rem] border border-border bg-card p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift',
+        'group block min-w-0 rounded-[1.35rem] border border-border bg-card p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift',
         className,
       )}
     >
@@ -89,9 +89,13 @@ export function UpcomingSessionCard({
                   : session.registrationStatus}
             </span>
           </div>
-          <h3 className="mt-2 truncate font-display text-lg font-bold">{session.name}</h3>
-          <p className="mt-0.5 text-xs text-muted-foreground">{session.club.name}</p>
-          <p className="mt-1 text-xs font-medium text-foreground/70">
+          <h3 className="mt-2 line-clamp-2 break-words font-display text-lg font-bold">
+            {session.name}
+          </h3>
+          <p className="mt-1 line-clamp-2 break-words text-xs leading-relaxed text-muted-foreground">
+            {session.club.name}
+          </p>
+          <p className="mt-1.5 text-xs font-medium leading-relaxed text-foreground/70">
             {formatShortDay(session.startsAt, session.timezone)} ·{' '}
             {formatRange(session.startsAt, session.endsAt, session.timezone)}
           </p>

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useState } from 'react';
 import Link from 'next/link';
@@ -149,7 +149,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
       />
       <ClubAdminNav clubId={clubId} />
 
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard label="Active" value={active.length} icon={<Users className="size-4" />} />
         <StatCard
           label="Pending"
@@ -169,7 +169,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
         />
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1.4fr_0.6fr]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.6fr)]">
         <div className="space-y-5">
           {pending.length > 0 ? (
             <Card>
@@ -184,11 +184,13 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                       key={member.id}
                       className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#f1dfb9] bg-[#fbf0d9]/60 p-3"
                     >
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex min-w-0 items-center gap-2.5">
                         <Avatar name={member.displayName} size="sm" />
-                        <div>
-                          <p className="text-sm font-bold">{member.displayName}</p>
-                          <p className="text-[0.6rem] text-muted-foreground">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold" title={member.displayName}>
+                            {member.displayName}
+                          </p>
+                          <p className="break-all text-[0.68rem] text-muted-foreground">
                             {member.email ?? member.name}
                           </p>
                         </div>
@@ -241,10 +243,12 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                     className="flex flex-wrap items-center gap-3 rounded-xl bg-secondary/40 p-3"
                   >
                     <Avatar name={member.displayName} size="sm" />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-bold">{member.displayName}</p>
-                      <p className="text-[0.6rem] text-muted-foreground">
-                        {member.email ?? member.name} Â· {member.skillRating.toFixed(2)} skill
+                    <div className="min-w-[10rem] flex-1">
+                      <p className="truncate text-sm font-bold" title={member.displayName}>
+                        {member.displayName}
+                      </p>
+                      <p className="mt-0.5 break-all text-[0.68rem] text-muted-foreground">
+                        {member.email ?? member.name} · {member.skillRating.toFixed(2)} skill
                       </p>
                     </div>
                     {isOwner && member.role !== 'OWNER' ? (
@@ -254,7 +258,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                           void updateMember(member.id, { role: event.target.value })
                         }
                         disabled={busy !== null}
-                        className="h-8 rounded-lg border border-border bg-card px-2 text-[0.65rem] font-semibold"
+                        className="h-9 rounded-lg border border-border bg-card px-2 text-xs font-semibold max-sm:h-11"
                         aria-label={`Role for ${member.displayName}`}
                       >
                         <option value="PLAYER">Player</option>
@@ -305,9 +309,13 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                       key={member.id}
                       className="flex items-center justify-between rounded-xl bg-secondary/40 p-3"
                     >
-                      <div>
-                        <p className="text-sm font-bold">{member.displayName}</p>
-                        <p className="text-[0.6rem] text-muted-foreground">{member.email}</p>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold" title={member.displayName}>
+                          {member.displayName}
+                        </p>
+                        <p className="mt-0.5 break-all text-[0.68rem] text-muted-foreground">
+                          {member.email}
+                        </p>
                       </div>
                       {isOwner ? (
                         <Button
@@ -420,7 +428,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                         <Badge tone="info">{invitation.role}</Badge>
                       </div>
                       <p className="mt-1 text-[0.58rem] text-muted-foreground">
-                        Sent {relativeTime(invitation.createdAt)} Â· expires{' '}
+                        Sent {relativeTime(invitation.createdAt)} · expires{' '}
                         {relativeTime(invitation.expiresAt)}
                       </p>
                       <div className="mt-2 flex justify-end">

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -103,7 +103,7 @@ export default function ManageDashboardPage() {
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard
           label="Sessions today"
           value={sessions.data?.length ?? 0}
@@ -126,8 +126,8 @@ export default function ManageDashboardPage() {
       ) : sessions.isError ? (
         <ErrorState error={sessions.error} onRetry={() => void sessions.refetch()} />
       ) : (
-        <div className="grid gap-5 lg:grid-cols-[1.5fr_0.5fr]">
-          <div className="space-y-5">
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,0.5fr)]">
+          <div className="min-w-0 space-y-5">
             {live ? (
               <div className="relative overflow-hidden rounded-[1.6rem] bg-forest p-5 text-white sm:p-6">
                 <div className="pickle-pattern absolute inset-0 opacity-30" />
@@ -136,7 +136,7 @@ export default function ManageDashboardPage() {
                     <div className="flex items-center gap-2">
                       <LiveBadge />
                       <span className="text-[0.62rem] font-bold uppercase tracking-[0.14em] text-white/45">
-                        Session live Â· {live.courts.length} courts
+                        Session live · {live.courts.length} courts
                       </span>
                     </div>
                     <span className="text-[0.65rem] text-white/50">
@@ -153,9 +153,14 @@ export default function ManageDashboardPage() {
                       ['Waiting', live.waiting ?? 0],
                       ['Playing', live.playing ?? 0],
                     ].map(([label, value]) => (
-                      <div key={label} className="rounded-xl bg-white/[0.07] px-3 py-2.5">
-                        <p className="font-display text-2xl font-extrabold tabular">{value}</p>
-                        <p className="text-[0.58rem] font-semibold uppercase tracking-[0.1em] text-white/45">
+                      <div
+                        key={label}
+                        className="min-w-0 rounded-xl bg-white/[0.07] px-2 py-2.5 sm:px-3"
+                      >
+                        <p className="font-display text-xl font-extrabold tabular sm:text-2xl">
+                          {value}
+                        </p>
+                        <p className="text-[0.55rem] font-semibold uppercase leading-tight tracking-[0.06em] text-white/45 sm:text-[0.58rem] sm:tracking-[0.1em]">
                           {label}
                         </p>
                       </div>
@@ -199,8 +204,8 @@ export default function ManageDashboardPage() {
                     </Badge>
                     <h2 className="mt-2 font-display text-xl font-bold">{checking.name}</h2>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {checking.checkedIn ?? 0} checked in Â· {checking.registered ?? 0} registered
-                      Â· starts {formatRange(checking.startsAt, checking.endsAt, checking.timezone)}
+                      {checking.checkedIn ?? 0} checked in · {checking.registered ?? 0} registered ·
+                      starts {formatRange(checking.startsAt, checking.endsAt, checking.timezone)}
                     </p>
                   </div>
                   <Button asChild size="sm">
@@ -253,13 +258,18 @@ export default function ManageDashboardPage() {
                         <CalendarDays className="size-4" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="truncate text-sm font-bold">{session.name}</p>
+                        <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                          <p
+                            className="min-w-0 flex-1 basis-24 truncate text-sm font-bold"
+                            title={session.name}
+                          >
+                            {session.name}
+                          </p>
                           <SessionStatusBadge status={session.status} />
                         </div>
-                        <p className="mt-0.5 text-[0.65rem] text-muted-foreground">
-                          {formatShortDay(session.startsAt, session.timezone)} Â·{' '}
-                          {formatRange(session.startsAt, session.endsAt, session.timezone)} Â·{' '}
+                        <p className="mt-1 text-[0.68rem] leading-relaxed text-muted-foreground">
+                          {formatShortDay(session.startsAt, session.timezone)} ·{' '}
+                          {formatRange(session.startsAt, session.endsAt, session.timezone)} ·{' '}
                           {session.registered ?? 0} registered
                         </p>
                       </div>
@@ -285,7 +295,7 @@ export default function ManageDashboardPage() {
             </div>
           </div>
 
-          <aside className="space-y-4">
+          <aside className="min-w-0 space-y-4">
             <Card>
               <CardContent className="p-5">
                 <h2 className="font-display text-base font-bold">Quick actions</h2>
@@ -314,7 +324,7 @@ export default function ManageDashboardPage() {
                       <Link
                         key={action.label}
                         href={action.href}
-                        className="flex min-h-10 items-center gap-2.5 rounded-xl px-3 text-xs font-semibold text-foreground/80 transition-colors hover:bg-secondary/60"
+                        className="flex min-h-10 items-center gap-2.5 rounded-xl px-3 text-xs font-semibold text-foreground/80 transition-colors max-sm:min-h-11 hover:bg-secondary/60"
                       >
                         <span className="grid size-7 place-items-center rounded-lg bg-secondary text-primary">
                           <Icon className="size-3.5" />
@@ -343,11 +353,16 @@ export default function ManageDashboardPage() {
               <CardContent className="p-5">
                 <div className="flex items-center gap-3">
                   <Avatar name={me.profile?.displayName ?? me.name} size="md" />
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold">
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className="truncate text-sm font-bold"
+                      title={me.profile?.displayName ?? me.name}
+                    >
                       {me.profile?.displayName ?? me.name}
                     </p>
-                    <p className="text-[0.62rem] text-muted-foreground">{activeClub?.clubName}</p>
+                    <p className="mt-0.5 truncate text-[0.62rem] text-muted-foreground">
+                      {activeClub?.clubName}
+                    </p>
                   </div>
                 </div>
                 <Button asChild variant="outline" size="sm" className="mt-4 w-full">

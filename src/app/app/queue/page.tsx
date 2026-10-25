@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useQueryClient } from '@tanstack/react-query';
@@ -77,12 +77,12 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                     {[...myMatch.teams.A, ...myMatch.teams.B]
                       .filter((player) => player.userId !== self?.userId)
                       .map((player) => player.displayName)
-                      .join(' Â· ')}
+                      .join(' · ')}
                   </p>
                 </div>
                 <div className="tabular font-display text-5xl font-extrabold">
                   {myMatch.currentGame.a}
-                  <span className="mx-1.5 text-xl text-muted-foreground">â€“</span>
+                  <span className="mx-1.5 text-xl text-muted-foreground">–</span>
                   {myMatch.currentGame.b}
                 </div>
               </div>
@@ -99,7 +99,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                   <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                     Your position
                   </p>
-                  <div className="mt-1 flex items-baseline gap-3">
+                  <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span
                       className={
                         self.state === 'PAUSED'
@@ -111,7 +111,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                         ? 'Paused'
                         : self.position
                           ? `#${self.position}`
-                          : 'â€”'}
+                          : '—'}
                     </span>
                     {self.estimatedWaitMinutes !== null ? (
                       <div>
@@ -127,7 +127,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                     ) : null}
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    {self.gamesPlayed} game{self.gamesPlayed === 1 ? '' : 's'} played Â· waiting{' '}
+                    {self.gamesPlayed} game{self.gamesPlayed === 1 ? '' : 's'} played · waiting{' '}
                     {self.waitingMinutes} min
                   </p>
                 </div>
@@ -221,8 +221,8 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
         />
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-        <Card>
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+        <Card className="min-w-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">Waiting list</h2>
@@ -245,12 +245,12 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                     </span>
                     <Avatar name={entry.displayName} size="sm" />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-bold">
+                      <p className="line-clamp-2 break-words text-xs font-bold">
                         {entry.displayName}
                         {entry.userId === self?.userId ? ' (you)' : ''}
                       </p>
-                      <p className="text-[0.6rem] text-muted-foreground">
-                        {entry.gamesPlayed} games Â· {entry.waitingMinutes}m wait
+                      <p className="mt-0.5 text-[0.68rem] text-muted-foreground">
+                        {entry.gamesPlayed} games · {entry.waitingMinutes}m wait
                       </p>
                     </div>
                     <Badge tone="neutral">{entry.skillRating.toFixed(2)}</Badge>
@@ -265,18 +265,18 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="min-w-0">
           <CardContent className="p-5">
             <h2 className="font-display text-lg font-bold">Courts</h2>
             <div className="mt-3 space-y-2">
               {snapshot.courts.map((court) => (
                 <div
                   key={court.id}
-                  className="flex items-center justify-between rounded-xl bg-secondary/50 px-3 py-2.5"
+                  className="flex items-center justify-between gap-2 rounded-xl bg-secondary/50 px-3 py-2.5"
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xs font-bold">{court.name}</p>
-                    <p className="text-[0.6rem] text-muted-foreground">
+                    <p className="mt-0.5 text-[0.68rem] leading-relaxed text-muted-foreground">
                       {court.match
                         ? court.match.teams.A.map(
                             (player) => player.displayName.split(' ')[0],
@@ -366,7 +366,7 @@ export default function MyQueuePage() {
       <PageHeader
         eyebrow="My Queue"
         title="Your place in line"
-        description={`${liveSession.name} Â· ${formatShortDay(liveSession.startsAt, liveSession.timezone)} Â· ${formatRange(liveSession.startsAt, liveSession.endsAt, liveSession.timezone)}`}
+        description={`${liveSession.name} · ${formatShortDay(liveSession.startsAt, liveSession.timezone)} · ${formatRange(liveSession.startsAt, liveSession.endsAt, liveSession.timezone)}`}
         actions={
           <div className="flex items-center gap-2">
             <ConnectionPill status={status} />
