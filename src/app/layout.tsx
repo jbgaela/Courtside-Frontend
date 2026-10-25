@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { connection } from 'next/server';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/manrope';
 import './globals.css';
@@ -42,7 +43,10 @@ export const viewport: Viewport = {
   themeColor: '#f4f6ef',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Nonce-based CSP requires request-time rendering so Next can attach the
+  // request nonce to framework and page scripts.
+  await connection();
   return (
     <html lang="en">
       <body>

@@ -1,3 +1,5 @@
+import { clearPrivateClientCaches, clearPrivateLocalData } from './private-client-data';
+
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') ?? 'http://localhost:4000';
 export const API_INTERNAL_URL = process.env.API_INTERNAL_URL?.replace(/\/$/, '') ?? API_URL;
@@ -140,7 +142,12 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
       } | null
     )?.error;
     if (response.status === 401) {
+      const hadSessionToken = Boolean(getCsrfToken());
       setCsrfToken(null);
+      // Drop any last-seen club data even if the session expired without an
+      // explicit logout. Cached HTML is separately private-route protected.
+      clearPrivateLocalData();
+      if (hadSessionToken) void clearPrivateClientCaches();
     }
     throw new ApiError(
       response.status,

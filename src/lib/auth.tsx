@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError, api, setCsrfToken } from './api';
+import { clearPrivateClientCaches, clearPrivateLocalData } from './private-client-data';
 import type { Me } from './types';
 
 interface AuthState {
@@ -41,6 +42,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const setMe = React.useCallback(
     (me: Me | null) => {
+      const previous = queryClient.getQueryData<Me | null>(['me']);
+      if (previous?.id !== me?.id) {
+        clearPrivateLocalData();
+        void clearPrivateClientCaches();
+      }
       queryClient.setQueryData(['me'], me);
       setCsrfToken(me?.csrfToken ?? null);
     },
@@ -58,6 +64,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Clearing local auth state must succeed even if the server session is already gone.
     }
     setCsrfToken(null);
+    clearPrivateLocalData();
+    await clearPrivateClientCaches();
     queryClient.setQueryData(['me'], null);
     queryClient.clear();
   }, [queryClient]);
