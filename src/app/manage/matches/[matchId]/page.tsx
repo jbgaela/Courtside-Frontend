@@ -79,7 +79,14 @@ function TeamPanel({
           <div key={player.displayName} className="flex items-center gap-2">
             <Avatar name={player.displayName} size="sm" />
             <div className="min-w-0">
-              <p className="truncate text-xs font-bold">{player.displayName}</p>
+              <p className="truncate text-xs font-bold">
+                {player.displayName}
+                {player.participantType === 'GUEST' ? (
+                  <span className="ml-1.5 rounded-full bg-[#e8f1f6] px-1.5 py-0.5 text-[0.5rem] font-bold uppercase tracking-wider text-[#245f7d]">
+                    Guest
+                  </span>
+                ) : null}
+              </p>
               <p className="text-[0.55rem] text-muted-foreground">
                 {player.skillRating.toFixed(2)} skill
               </p>

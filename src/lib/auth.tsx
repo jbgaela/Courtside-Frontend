@@ -99,3 +99,8 @@ export function useIsAdmin(): boolean {
     ),
   );
 }
+
+export function useIsSuperAdmin(): boolean {
+  const { me } = useAuth();
+  return me?.platformRole === 'SUPER_ADMIN' && me.accountStatus === 'ACTIVE';
+}

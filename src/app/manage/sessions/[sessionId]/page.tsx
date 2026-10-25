@@ -737,8 +737,13 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
                         {entry.position}
                       </span>
                       <Avatar name={entry.displayName} size="xs" />
-                      <span className="min-w-0 flex-1 truncate text-xs font-semibold">
-                        {entry.displayName}
+                      <span className="flex min-w-0 flex-1 items-center gap-1.5">
+                        <span className="truncate text-xs font-semibold">{entry.displayName}</span>
+                        {entry.participantType === 'GUEST' ? (
+                          <Badge tone="info" className="shrink-0 px-1.5 py-0.5 text-[0.5rem]">
+                            Guest
+                          </Badge>
+                        ) : null}
                       </span>
                       <span className="text-[0.6rem] text-muted-foreground">
                         {entry.waitingMinutes}m
@@ -820,10 +825,14 @@ export default function ManageSessionPage({ params }: { params: Promise<{ sessio
           <div className="space-y-4">
             <Card>
               <CardContent className="p-5">
-                <h2 className="font-display text-base font-bold">Player registrations</h2>
+                <h2 className="font-display text-base font-bold">Participants</h2>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {registrations.data?.registrations.length ?? 0} total Â· {pending.length} pending
-                  approval
+                  {registrations.data?.participants.length ??
+                    registrations.data?.registrations.length ??
+                    0}{' '}
+                  total Â· {registrations.data?.guests.length ?? 0} guest
+                  {(registrations.data?.guests.length ?? 0) === 1 ? '' : 's'} Â· {pending.length}{' '}
+                  pending approval
                 </p>
                 <Button asChild variant="outline" size="sm" className="mt-3 w-full">
                   <Link href={`/manage/sessions/${sessionId}/check-in`}>

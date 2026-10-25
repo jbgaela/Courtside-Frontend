@@ -173,6 +173,8 @@ export function useRegistrations(sessionId: string | undefined) {
       api.get<{
         sessionId: string;
         registrations: RegistrationRow[];
+        guests: RegistrationRow[];
+        participants: RegistrationRow[];
         counts: Record<string, number>;
         capacity: number;
       }>(`/api/v1/sessions/${encodeURIComponent(sessionId ?? '')}/registrations`),

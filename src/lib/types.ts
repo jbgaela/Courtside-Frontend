@@ -1,6 +1,8 @@
 import type {
+  GuestGender,
   MatchFormat,
   MatchmakingConfig,
+  ParticipantType,
   ScoringConfig,
   SessionStatus,
 } from '@picklequeue/contracts';
@@ -14,12 +16,25 @@ export interface MembershipSummary {
   location: string | null;
 }
 
+export type PlatformRole = 'USER' | 'SUPER_ADMIN';
+export type AccountStatus =
+  | 'PENDING_APPROVAL'
+  | 'APPROVED_PENDING_ACTIVATION'
+  | 'ACTIVE'
+  | 'SUSPENDED'
+  | 'DEACTIVATED'
+  | 'DELETED';
+export type RegistrationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
 export interface Me {
   id: string;
   email: string;
   name: string;
   emailVerified: boolean;
   emailVerifiedAt: string | null;
+  platformRole: PlatformRole;
+  accountStatus: AccountStatus;
+  activatedAt: string | null;
   createdAt: string;
   profile: {
     displayName: string;
@@ -29,6 +44,20 @@ export interface Me {
   } | null;
   memberships: MembershipSummary[];
   csrfToken: string;
+}
+
+export interface RegistrationStatusView {
+  name: string;
+  email: string;
+  accountStatus: AccountStatus;
+  registrationStatus: RegistrationStatus | null;
+  submittedAt: string | null;
+  reviewedAt: string | null;
+  publicReason: string | null;
+  canActivate: boolean;
+  restricted: boolean;
+  csrfToken: string;
+  expiresAt: string;
 }
 
 export interface ClubSummary {
@@ -87,6 +116,7 @@ export interface SessionRecord {
   viewerQueueState: string | null;
   registered?: number;
   checkedIn?: number;
+  guests?: number;
   waiting?: number;
   playing?: number;
   pending?: number;
@@ -112,7 +142,11 @@ export interface UpcomingSession {
 
 export interface QueueEntryView {
   id: string;
-  userId: string;
+  participantId: string;
+  participantType: ParticipantType;
+  userId: string | null;
+  guestId: string | null;
+  gender: GuestGender | null;
   displayName: string;
   skillRating: number;
   state: string;
@@ -137,6 +171,7 @@ export interface QueueSnapshot {
     checkedIn: number;
     registered: number;
     pending: number;
+    guests: number;
     waiting: number;
     playing: number;
     paused: number;
@@ -147,7 +182,10 @@ export interface QueueSnapshot {
 }
 
 export interface MatchPlayer {
-  userId?: string;
+  participantId?: string;
+  participantType?: ParticipantType;
+  userId?: string | null;
+  guestId?: string | null;
   name: string;
   displayName: string;
   skillRating: number;
@@ -185,27 +223,23 @@ export interface MatchView {
   } | null;
 }
 
+export type RotationPlayer = {
+  queueEntryId: string;
+  userId: string;
+  participantType?: ParticipantType;
+  displayName: string;
+  skill: number;
+  gamesPlayed: number;
+  waitMinutes: number;
+};
+
 export interface RotationAssignment {
   id: string;
   courtId: string;
   courtName: string;
   status: string;
-  teamA: Array<{
-    queueEntryId: string;
-    userId: string;
-    displayName: string;
-    skill: number;
-    gamesPlayed: number;
-    waitMinutes: number;
-  }>;
-  teamB: Array<{
-    queueEntryId: string;
-    userId: string;
-    displayName: string;
-    skill: number;
-    gamesPlayed: number;
-    waitMinutes: number;
-  }>;
+  teamA: RotationPlayer[];
+  teamB: RotationPlayer[];
   teamRatingA: number;
   teamRatingB: number;
   teamBalance: number;
@@ -239,6 +273,7 @@ export interface RotationView {
   bench: Array<{
     queueEntryId: string;
     userId: string;
+    participantType?: ParticipantType;
     displayName: string;
     gamesPlayed: number;
     waitMinutes: number;
@@ -267,19 +302,29 @@ export interface LiveSnapshot {
   serverTime: string;
 }
 
-export interface RegistrationRow {
+export interface ParticipantRow {
   id: string;
-  userId: string;
+  participantId: string;
+  participantType: ParticipantType;
+  userId: string | null;
+  guestId: string | null;
   name: string;
-  email: string;
+  email: string | null;
   displayName: string;
+  gender: GuestGender | null;
   skillRating: number;
   status: string;
+  guestStatus?: 'ACTIVE' | 'REMOVED';
+  version?: number;
   registeredAt: string;
   checkedInAt: string | null;
   checkInMethod: string | null;
+  removedAt?: string | null;
   queueState: string | null;
 }
+
+/** Kept as an alias so existing callers do not need a sweeping rename. */
+export type RegistrationRow = ParticipantRow;
 
 export interface PublicMatchPlayer {
   name: string;
