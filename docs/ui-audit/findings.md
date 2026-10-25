@@ -296,11 +296,11 @@
 - **Measured before:** name clientWidth 152, scrollWidth 164; contrast risk flagged in the prior audit.
 - **Likely root cause:** Dense scoreboard typography kept desktop sizes on mobile; `truncate` without fallback.
 - **Fix:** Team names `line-clamp-2` at `text-base sm:text-lg`; skill line 0.68rem/60% white; footer/meta 0.62rem/55–60%; “Exit” and “Upcoming & results” have 44px/24px hit areas.
-- **Measured after:** No clipped text at 320; screenshot shows full “Sam P. + Priya N.” / “Diego S. + Maria L.”; automation has no contrast assertions, so manual review remains.
+- **Measured after:** No clipped text at 320; screenshot shows full “Sam P. + Priya N.” / “Diego S. + Maria L.”; axe scan of the scoreboard now passes with 0 serious/critical contrast violations. The same scan also passes the QM dashboard, check-in and wizard.
 - **Files:** `src/components/public/public-scoreboard-view.tsx`, `src/components/public/public-match-card.tsx`
-- **Regression test:** spacing audit at 320/390; existing axe runs in the audit harness.
-- **Verification:** `before/ui-014-scoreboard-320.png`, `after/ui-014-scoreboard-320.png`.
-- **Status:** Fixed / Verified for layout; contrast re-check recommended with a colour-contrast tool.
+- **Regression test:** spacing audit at 320/390; `accessibility.spec.ts` scoreboard scan.
+- **Verification:** `before/ui-014-scoreboard-320.png`, `after/ui-014-scoreboard-320.png`; axe 0 serious/critical.
+- **Status:** Fixed / Verified.
 
 ## UI-015 — Tablet cockpit / QR placement
 

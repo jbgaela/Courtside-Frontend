@@ -71,12 +71,13 @@
 | Encoding | `pnpm check:encoding` | Pass |
 | Lint | `pnpm lint` | Pass |
 | Types | `pnpm typecheck` | Pass |
-| Build | `pnpm build` | See build log; pass expected |
+| Build | `pnpm build` | Pass |
 | Geometry (PR) | `node tests/e2e/audit/spacing-audit.mjs` | 100 screens, 0 errors, 34 warnings |
-| Geometry (full) | `node tests/e2e/audit/spacing-audit.mjs --full` | 400 screens, 0 errors, 130 warnings |
-| Spacing spec | `playwright test tests/ui-spacing.spec.ts` | Pass |
-| Accessibility | `playwright test tests/accessibility.spec.ts` | 2/2 pass |
-| Functional E2E | `pnpm test:e2e` | Not re-run in this worktree; existing suite remains |
+| Full geometry (400 screens) | `node tests/e2e/audit/spacing-audit.mjs --full` | **0 errors, 130 warnings** |
+| Spacing spec | `playwright test tests/ui-spacing.spec.ts` | **4/4 pass** |
+| Accessibility | `playwright test tests/accessibility.spec.ts` | **2/2 pass; 9 surfaces; 0 serious/critical** |
+| Functional E2E | `player-queue.spec.ts`, `qm-live.spec.ts` | **4/4 pass** |
+| 200% text smoke | `zoom-smoke.mjs` | 3 pass, 3 known failures (UI-019) |
 
 The 130 full-matrix warnings are all **touch-target advisories** (`<44px` on mobile) for 24px standalone text links, 32–34px secondary icon controls, and 24–30px utility links. They are WCAG 2.2 AA compliant at the 24px minimum; primary controls are 44px. See `accessibility-audit.md`.
 
@@ -127,7 +128,11 @@ The 130 full-matrix warnings are all **touch-target advisories** (`<44px` on mob
 
 ## 8. Pull requests
 
-- Frontend: `jbgaela/Courtside-Frontend` — **PR link to be added on creation**.
-- Backend (BOM-only cleanup): `jbgaela/Courtside-Backend` — **PR link to be added on creation**.
+- Frontend: [`jbgaela/Courtside-Frontend#4`](https://github.com/jbgaela/Courtside-Frontend/pull/4) — UI spacing and responsive layout remediation.
+- Backend: [`jbgaela/Courtside-Backend#4`](https://github.com/jbgaela/Courtside-Backend/pull/4) — BOM-only cleanup.
 
-Both branches were created from `main` in separate worktrees; the umbrella checkout was not rewritten.
+Both branches were created from `main` in separate worktrees; the umbrella checkout was not rewritten. The frontend branch contains two commits: the encoding repair and the spacing remediation.
+
+### Environment note
+
+`pnpm format:check` reports pre-existing CRLF/Prettier drift in ~83 files on this Windows checkout (the same failure exists on unmodified `main`). The files changed by this PR are Prettier-formatted; the check failure is not introduced by these changes.
