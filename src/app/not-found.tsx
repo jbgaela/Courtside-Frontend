@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -136,7 +136,7 @@ export default function ManageDashboardPage() {
                     <div className="flex items-center gap-2">
                       <LiveBadge />
                       <span className="text-[0.62rem] font-bold uppercase tracking-[0.14em] text-white/45">
-                        Session live Â· {live.courts.length} courts
+                        Session live · {live.courts.length} courts
                       </span>
                     </div>
                     <span className="text-[0.65rem] text-white/50">
@@ -199,8 +199,8 @@ export default function ManageDashboardPage() {
                     </Badge>
                     <h2 className="mt-2 font-display text-xl font-bold">{checking.name}</h2>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {checking.checkedIn ?? 0} checked in Â· {checking.registered ?? 0} registered
-                      Â· starts {formatRange(checking.startsAt, checking.endsAt, checking.timezone)}
+                      {checking.checkedIn ?? 0} checked in · {checking.registered ?? 0} registered
+                      · starts {formatRange(checking.startsAt, checking.endsAt, checking.timezone)}
                     </p>
                   </div>
                   <Button asChild size="sm">
@@ -258,8 +258,8 @@ export default function ManageDashboardPage() {
                           <SessionStatusBadge status={session.status} />
                         </div>
                         <p className="mt-0.5 text-[0.65rem] text-muted-foreground">
-                          {formatShortDay(session.startsAt, session.timezone)} Â·{' '}
-                          {formatRange(session.startsAt, session.endsAt, session.timezone)} Â·{' '}
+                          {formatShortDay(session.startsAt, session.timezone)} ·{' '}
+                          {formatRange(session.startsAt, session.endsAt, session.timezone)} ·{' '}
                           {session.registered ?? 0} registered
                         </p>
                       </div>

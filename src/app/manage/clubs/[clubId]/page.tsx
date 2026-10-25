@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use } from 'react';
 import Link from 'next/link';
@@ -152,7 +152,7 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
                   </Badge>
                   <h2 className="mt-2 font-display text-2xl font-bold">{live.name}</h2>
                   <p className="mt-1 text-xs text-white/55">
-                    {live.checkedIn ?? 0} checked in Â· {live.playing ?? 0} on court Â·{' '}
+                    {live.checkedIn ?? 0} checked in · {live.playing ?? 0} on court ·{' '}
                     {live.waiting ?? 0} waiting
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
                   <SessionStatusBadge status={next.status} />
                   <h2 className="mt-2 font-display text-xl font-bold">{next.name}</h2>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {formatShortDay(next.startsAt, next.timezone)} Â·{' '}
+                    {formatShortDay(next.startsAt, next.timezone)} ·{' '}
                     {formatRange(next.startsAt, next.endsAt, next.timezone)}
                   </p>
                 </div>
@@ -224,8 +224,8 @@ export default function ClubAdminPage({ params }: { params: Promise<{ clubId: st
                         <SessionStatusBadge status={session.status} />
                       </div>
                       <p className="mt-0.5 text-[0.65rem] text-muted-foreground">
-                        {formatShortDay(session.startsAt, session.timezone)} Â·{' '}
-                        {session.registered ?? 0} registered Â· {session.checkedIn ?? 0} checked in
+                        {formatShortDay(session.startsAt, session.timezone)} ·{' '}
+                        {session.registered ?? 0} registered · {session.checkedIn ?? 0} checked in
                       </p>
                     </div>
                     <ChevronRight className="size-4 text-muted-foreground" />

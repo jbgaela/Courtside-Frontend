@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -381,7 +381,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                   {startDate && endDate ? (
                     <div className="rounded-xl bg-secondary/60 px-3.5 py-2.5 text-xs text-muted-foreground">
                       <Clock3 className="mr-1.5 inline size-3.5" />
-                      {formatDay(startIso!, timezone)} Â·{' '}
+                      {formatDay(startIso!, timezone)} ·{' '}
                       {formatRange(startIso!, endIso!, timezone)}
                     </div>
                   ) : null}
@@ -502,14 +502,14 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                       value={strategy}
                       onChange={(event) => setStrategy(event.target.value as typeof strategy)}
                     >
-                      <option value="HYBRID">Hybrid â€” recommended</option>
+                      <option value="HYBRID">Hybrid — recommended</option>
                       <option value="SKILL_FIRST">Skill first</option>
                       <option value="FAIRNESS_FIRST">Fairness first</option>
                     </Select>
                   </Field>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Field
-                      label={`Preferred skill spread Â· ${preferredSpread.toFixed(2)}`}
+                      label={`Preferred skill spread · ${preferredSpread.toFixed(2)}`}
                       htmlFor="preferred"
                     >
                       <input
@@ -523,7 +523,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                         className="w-full accent-[#164430]"
                       />
                     </Field>
-                    <Field label={`Maximum skill spread Â· ${maxSpread.toFixed(2)}`} htmlFor="max">
+                    <Field label={`Maximum skill spread · ${maxSpread.toFixed(2)}`} htmlFor="max">
                       <input
                         id="max"
                         type="range"
@@ -682,7 +682,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                     <h3 className="mt-1 font-display text-lg font-bold">{name}</h3>
                     <p className="text-xs text-[#3e5716]">
                       {startIso && endIso
-                        ? `${formatDay(startIso, timezone)} Â· ${formatRange(startIso, endIso, timezone)}`
+                        ? `${formatDay(startIso, timezone)} · ${formatRange(startIso, endIso, timezone)}`
                         : 'Choose a time'}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-2 text-[0.65rem] font-semibold text-[#47641d]">
@@ -753,7 +753,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                   {startIso && endIso ? formatRange(startIso, endIso, timezone) : 'Time not set'}
                 </p>
                 <p className="flex items-center gap-2">
-                  <Users className="size-3.5" /> {selectedCourts.length} courts Â· {capacity}{' '}
+                  <Users className="size-3.5" /> {selectedCourts.length} courts · {capacity}{' '}
                   capacity
                 </p>
                 <p className="flex items-center gap-2">

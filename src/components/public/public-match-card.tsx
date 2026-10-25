@@ -1,4 +1,4 @@
-﻿import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import type { PublicMatch } from '@/lib/types';
 
 export function PublicMatchCard({
@@ -31,7 +31,7 @@ export function PublicMatchCard({
             tone === 'dark' ? 'text-white/40' : 'text-muted-foreground',
           )}
         >
-          {match.court.name} Â· Round {match.round}
+          {match.court.name} · Round {match.round}
         </p>
         <span
           className={cn(
@@ -114,7 +114,7 @@ export function PublicMatchCard({
                   : 'bg-secondary text-muted-foreground',
               )}
             >
-              {game.a}â€“{game.b}
+              {game.a}–{game.b}
             </span>
           ))}
         </div>

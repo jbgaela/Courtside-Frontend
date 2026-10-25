@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useState } from 'react';
 import Link from 'next/link';
@@ -244,7 +244,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-bold">{member.displayName}</p>
                       <p className="text-[0.6rem] text-muted-foreground">
-                        {member.email ?? member.name} Â· {member.skillRating.toFixed(2)} skill
+                        {member.email ?? member.name} · {member.skillRating.toFixed(2)} skill
                       </p>
                     </div>
                     {isOwner && member.role !== 'OWNER' ? (
@@ -420,7 +420,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                         <Badge tone="info">{invitation.role}</Badge>
                       </div>
                       <p className="mt-1 text-[0.58rem] text-muted-foreground">
-                        Sent {relativeTime(invitation.createdAt)} Â· expires{' '}
+                        Sent {relativeTime(invitation.createdAt)} · expires{' '}
                         {relativeTime(invitation.expiresAt)}
                       </p>
                       <div className="mt-2 flex justify-end">

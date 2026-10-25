@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import {
   ArrowRight,
   CalendarCheck,
@@ -152,7 +152,7 @@ export default function WelcomePage() {
                   <p className="text-[0.62rem] font-bold uppercase tracking-wider text-muted-foreground">
                     Fairness engine
                   </p>
-                  <p className="text-xs font-bold">Next up: Alex Â· 3.5</p>
+                  <p className="text-xs font-bold">Next up: Alex · 3.5</p>
                 </div>
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function WelcomePage() {
                           {match.a}
                         </span>
                         <span className="pb-1 text-lg font-semibold text-muted-foreground">
-                          â€“
+                          –
                         </span>
                         <span className="font-display text-4xl font-extrabold leading-none">
                           {match.b}
@@ -213,7 +213,7 @@ export default function WelcomePage() {
                       <div>
                         <p className="text-xs font-bold">Alex Reyes</p>
                         <p className="text-[0.62rem] text-muted-foreground">
-                          3.5 skill Â· 2 games played
+                          3.5 skill · 2 games played
                         </p>
                       </div>
                     </div>
@@ -221,7 +221,7 @@ export default function WelcomePage() {
                       <p className="text-[0.55rem] font-bold uppercase tracking-wider text-muted-foreground">
                         Estimated wait
                       </p>
-                      <p className="text-xs font-extrabold text-primary">10â€“15 min</p>
+                      <p className="text-xs font-extrabold text-primary">10–15 min</p>
                     </div>
                   </div>
                   <div className="mt-3 flex items-center justify-between rounded-xl bg-secondary px-3 py-2">
@@ -255,7 +255,7 @@ export default function WelcomePage() {
               <p className="text-[0.58rem] font-bold uppercase tracking-wider text-muted-foreground">
                 Balance
               </p>
-              <p className="font-display text-lg font-extrabold text-primary">7.00 â€“ 7.00</p>
+              <p className="font-display text-lg font-extrabold text-primary">7.00 – 7.00</p>
               <p className="text-[0.6rem] text-muted-foreground">
                 All three team splits considered
               </p>

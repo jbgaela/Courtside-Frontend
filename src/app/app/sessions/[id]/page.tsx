@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useState } from 'react';
 import Link from 'next/link';
@@ -344,7 +344,7 @@ export default function SessionDetailPage({ params }: { params: Promise<{ id: st
                               </div>
                               <div className="tabular font-display text-3xl font-extrabold">
                                 {court.match.currentGame.a}
-                                <span className="mx-1 text-muted-foreground">â€“</span>
+                                <span className="mx-1 text-muted-foreground">–</span>
                                 {court.match.currentGame.b}
                               </div>
                             </div>
@@ -477,7 +477,7 @@ export default function SessionDetailPage({ params }: { params: Promise<{ id: st
             </p>
             <p className="mt-1 text-xs leading-relaxed text-[#3e5716]">
               A QR code opens the check-in page, but you still need to be signed in. Scanning alone
-              never claims another playerâ€™s spot.
+              never claims another player’s spot.
             </p>
           </div>
         </aside>

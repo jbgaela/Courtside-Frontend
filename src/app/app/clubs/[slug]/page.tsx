@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useState } from 'react';
 import Link from 'next/link';
@@ -109,7 +109,7 @@ export default function ClubDetailPage({ params }: { params: Promise<{ slug: str
               ) : (
                 <Button variant="accent" size="sm" onClick={() => void join()} disabled={joining}>
                   {joining
-                    ? 'Joiningâ€¦'
+                    ? 'Joining…'
                     : club.joinPolicy === 'OPEN'
                       ? 'Join club'
                       : 'Request to join'}
@@ -197,7 +197,7 @@ export default function ClubDetailPage({ params }: { params: Promise<{ slug: str
                       <SessionStatusBadge status={session.status} />
                       <h3 className="mt-2 font-display text-lg font-bold">{session.name}</h3>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {formatShortDay(session.startsAt, session.timezone)} Â·{' '}
+                        {formatShortDay(session.startsAt, session.timezone)} ·{' '}
                         {formatRange(session.startsAt, session.endsAt, session.timezone)}
                       </p>
                     </div>

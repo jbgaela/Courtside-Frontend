@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useQueryClient } from '@tanstack/react-query';
@@ -90,7 +90,7 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                 <span className="font-display text-4xl font-extrabold leading-none">
                   {myMatch.currentGame.a}
                 </span>
-                <span className="pb-1 text-muted-foreground">â€“</span>
+                <span className="pb-1 text-muted-foreground">–</span>
                 <span className="font-display text-4xl font-extrabold leading-none">
                   {myMatch.currentGame.b}
                 </span>
@@ -120,7 +120,7 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                       ? `#${self.position}`
                       : self.state === 'PLAYING'
                         ? 'On court'
-                        : 'â€”'}
+                        : '—'}
                   </span>
                   {self.estimatedWaitMinutes !== null && self.position ? (
                     <span className="rounded-full bg-lime-soft px-2.5 py-1 text-[0.65rem] font-bold text-[#47641d]">
@@ -132,7 +132,7 @@ function LiveSummary({ snapshot, userId }: { snapshot: LiveSnapshot; userId: str
                 </div>
                 <p className="mt-1.5 text-xs text-muted-foreground">
                   {self.state === 'WAITING'
-                    ? `Waiting ${self.waitingMinutes} min Â· ${self.gamesPlayed} game${self.gamesPlayed === 1 ? '' : 's'} played`
+                    ? `Waiting ${self.waitingMinutes} min · ${self.gamesPlayed} game${self.gamesPlayed === 1 ? '' : 's'} played`
                     : self.state === 'PAUSED'
                       ? 'Your queue participation is paused'
                       : 'Waiting for the next rotation'}
@@ -488,7 +488,7 @@ export default function PlayerHomePage() {
               How rotation works
             </p>
             <p className="mt-1 text-xs leading-relaxed text-[#3e5716]">
-              Fewest games first. Then the longest wait. Skill and balance decide the teams â€”
+              Fewest games first. Then the longest wait. Skill and balance decide the teams —
               never who gets left out.
             </p>
             <Link
@@ -511,7 +511,7 @@ export default function PlayerHomePage() {
               <div>
                 <p className="text-sm font-bold">Session timing</p>
                 <p className="text-xs text-muted-foreground">
-                  {formatShortDay(upcoming.data[0]!.startsAt, upcoming.data[0]!.timezone)} Â·{' '}
+                  {formatShortDay(upcoming.data[0]!.startsAt, upcoming.data[0]!.timezone)} ·{' '}
                   {formatRange(
                     upcoming.data[0]!.startsAt,
                     upcoming.data[0]!.endsAt,

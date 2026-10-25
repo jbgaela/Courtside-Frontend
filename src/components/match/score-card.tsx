@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { MatchStatusBadge } from '@/components/session/status';
 import type { MatchView } from '@/lib/types';
@@ -92,7 +92,7 @@ export function MatchScoreCard({
               tone === 'dark' ? 'text-white/45' : 'text-muted-foreground',
             )}
           >
-            {match.court.name} Â· R{match.round}
+            {match.court.name} · R{match.round}
           </span>
           <MatchStatusBadge status={match.status} />
         </div>
@@ -115,7 +115,7 @@ export function MatchScoreCard({
             tone === 'dark' ? 'text-white/30' : 'text-muted-foreground',
           )}
         >
-          Games {match.gamesWonA}â€“{match.gamesWonB}
+          Games {match.gamesWonA}–{match.gamesWonB}
         </p>
       ) : null}
     </Link>

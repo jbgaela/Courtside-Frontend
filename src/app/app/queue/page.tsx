@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useQueryClient } from '@tanstack/react-query';
@@ -77,12 +77,12 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                     {[...myMatch.teams.A, ...myMatch.teams.B]
                       .filter((player) => player.userId !== self?.userId)
                       .map((player) => player.displayName)
-                      .join(' Â· ')}
+                      .join(' · ')}
                   </p>
                 </div>
                 <div className="tabular font-display text-5xl font-extrabold">
                   {myMatch.currentGame.a}
-                  <span className="mx-1.5 text-xl text-muted-foreground">â€“</span>
+                  <span className="mx-1.5 text-xl text-muted-foreground">–</span>
                   {myMatch.currentGame.b}
                 </div>
               </div>
@@ -111,7 +111,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                         ? 'Paused'
                         : self.position
                           ? `#${self.position}`
-                          : 'â€”'}
+                          : '—'}
                     </span>
                     {self.estimatedWaitMinutes !== null ? (
                       <div>
@@ -127,7 +127,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                     ) : null}
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    {self.gamesPlayed} game{self.gamesPlayed === 1 ? '' : 's'} played Â· waiting{' '}
+                    {self.gamesPlayed} game{self.gamesPlayed === 1 ? '' : 's'} played · waiting{' '}
                     {self.waitingMinutes} min
                   </p>
                 </div>
@@ -250,7 +250,7 @@ function QueueBoard({ snapshot, sessionId }: { snapshot: LiveSnapshot; sessionId
                         {entry.userId === self?.userId ? ' (you)' : ''}
                       </p>
                       <p className="text-[0.6rem] text-muted-foreground">
-                        {entry.gamesPlayed} games Â· {entry.waitingMinutes}m wait
+                        {entry.gamesPlayed} games · {entry.waitingMinutes}m wait
                       </p>
                     </div>
                     <Badge tone="neutral">{entry.skillRating.toFixed(2)}</Badge>
@@ -366,7 +366,7 @@ export default function MyQueuePage() {
       <PageHeader
         eyebrow="My Queue"
         title="Your place in line"
-        description={`${liveSession.name} Â· ${formatShortDay(liveSession.startsAt, liveSession.timezone)} Â· ${formatRange(liveSession.startsAt, liveSession.endsAt, liveSession.timezone)}`}
+        description={`${liveSession.name} · ${formatShortDay(liveSession.startsAt, liveSession.timezone)} · ${formatRange(liveSession.startsAt, liveSession.endsAt, liveSession.timezone)}`}
         actions={
           <div className="flex items-center gap-2">
             <ConnectionPill status={status} />

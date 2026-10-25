@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ export default function CheckInPage({ params }: { params: Promise<{ token: strin
   const { me, loading } = useAuth();
   const router = useRouter();
   const [state, setState] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('Checking you inâ€¦');
+  const [message, setMessage] = useState('Checking you in…');
   const started = useRef(false);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function CheckInPage({ params }: { params: Promise<{ token: strin
         </Card>
       </main>
       <footer className="flex items-center justify-center gap-2 py-5 text-[0.65rem] text-muted-foreground">
-        <QrCode className="size-3.5" /> Session check-in Â· Play Â· Rotate Â· Connect
+        <QrCode className="size-3.5" /> Session check-in · Play · Rotate · Connect
       </footer>
     </div>
   );

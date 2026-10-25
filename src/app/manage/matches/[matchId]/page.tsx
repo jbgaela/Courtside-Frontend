@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -272,16 +272,16 @@ export default function MatchScoringPage({ params }: { params: Promise<{ matchId
                 <Badge tone="neutral">{match.status}</Badge>
               )}
               <span className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                {match.court.name} Â· Round {match.round}
+                {match.court.name} · Round {match.round}
               </span>
             </div>
             <h1 className="mt-2 font-display text-2xl font-extrabold tracking-[-0.04em] sm:text-3xl">
               Live scoreboard
             </h1>
             <p className="mt-1 text-xs text-muted-foreground">
-              First to {match.scoring.targetScore} Â·{' '}
+              First to {match.scoring.targetScore} ·{' '}
               {match.scoring.winByTwo ? 'win by two' : 'win by one'}
-              {match.scoring.pointCap ? ` Â· cap ${match.scoring.pointCap}` : ''} Â· best of{' '}
+              {match.scoring.pointCap ? ` · cap ${match.scoring.pointCap}` : ''} · best of{' '}
               {match.scoring.bestOf}
             </p>
           </div>
@@ -384,7 +384,7 @@ export default function MatchScoringPage({ params }: { params: Promise<{ matchId
                 index === match.games.length - 1 ? 'bg-primary text-primary-foreground' : 'bg-card'
               }`}
             >
-              {game.a}â€“{game.b}
+              {game.a}–{game.b}
             </span>
           ))}
           <span className="ml-auto text-[0.62rem] text-muted-foreground">
@@ -434,7 +434,7 @@ export default function MatchScoringPage({ params }: { params: Promise<{ matchId
           <div className="mt-4 space-y-3">
             {correctionScores.map((game, index) => (
               <div key={index} className="grid grid-cols-[1fr_1fr] gap-2">
-                <Field label={`Game ${index + 1} Â· Team A`} htmlFor={`correction-a-${index}`}>
+                <Field label={`Game ${index + 1} · Team A`} htmlFor={`correction-a-${index}`}>
                   <Input
                     id={`correction-a-${index}`}
                     type="number"

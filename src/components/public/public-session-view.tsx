@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -78,7 +78,7 @@ export function PublicSessionView({ initialData }: { initialData: PublicSession 
 
         {!session.data && cached ? (
           <div className="mt-3 flex items-center gap-2 rounded-xl border border-[#f1dfb9] bg-[#fbf0d9] px-3.5 py-2.5 text-xs text-[#7a520c]">
-            <WifiOff className="size-3.5" /> Offline â€” showing the last snapshot from{' '}
+            <WifiOff className="size-3.5" /> Offline — showing the last snapshot from{' '}
             {relativeTime(cached.savedAt)}. Scores may have changed.
           </div>
         ) : null}

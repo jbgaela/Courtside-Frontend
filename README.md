@@ -1,4 +1,4 @@
-﻿# PickleQueue Web
+# PickleQueue Web
 
 Next.js 16 App Router PWA for PickleQueue: player queue, Queue Master live board,
 rally scoring, public scoreboard and offline fallback.
@@ -60,10 +60,10 @@ Run `pnpm build:packages` after editing it.
 
 Against the seeded development API. Password: `PickleQueue123!`
 
-- `owner@picklequeue.dev` â€” Queue Master console
-- `alex@picklequeue.dev` â€” player
-- `zoe@picklequeue.dev` â€” player
-- `jordan@picklequeue.dev` â€” Queue Master
+- `owner@picklequeue.dev` — Queue Master console
+- `alex@picklequeue.dev` — player
+- `zoe@picklequeue.dev` — player
+- `jordan@picklequeue.dev` — Queue Master
 
 ## Deployment
 
