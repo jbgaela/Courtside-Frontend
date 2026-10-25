@@ -3,16 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.17.0",
   "engines": {
     "node": ">=20.9"
   },
   "scripts": {
-    "dev": "next dev -p 3000",
-    "build": "next build",
+    "build:packages": "pnpm --filter @picklequeue/contracts build",
+    "postinstall": "pnpm build:packages",
+    "dev": "pnpm build:packages && next dev -p 3000",
+    "build": "pnpm build:packages && next build",
     "start": "next start -p 3000",
-    "typegen": "next typegen",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src --max-warnings=0"
+    "typegen": "pnpm build:packages && next typegen",
+    "typecheck": "pnpm build:packages && tsc --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "pnpm --filter @picklequeue/contracts test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.3.0",
@@ -41,6 +47,7 @@
     "@types/react-dom": "19.2.2",
     "eslint": "9.39.2",
     "eslint-config-next": "16.4.3",
+    "prettier": "3.6.2",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3"
   }
