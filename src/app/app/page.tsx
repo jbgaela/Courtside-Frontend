@@ -462,11 +462,12 @@ export default function PlayerHomePage() {
                       <div>
                         <p className="text-xs font-bold">{club.clubName}</p>
                         <p className="text-[0.6rem] text-muted-foreground">
-                          {club.role === 'OWNER'
-                            ? 'Owner'
-                            : club.role === 'QUEUE_MASTER'
-                              ? 'Queue Master'
-                              : 'Player'}
+                          {club.roleName ||
+                            (club.role === 'OWNER'
+                              ? 'Owner'
+                              : club.role === 'QUEUE_MASTER'
+                                ? 'Queue Master'
+                                : 'Player')}
                         </p>
                       </div>
                       <ChevronRight className="size-3.5 text-muted-foreground" />

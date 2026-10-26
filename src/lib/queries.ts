@@ -4,6 +4,7 @@ import { useQuery, type QueryClient } from '@tanstack/react-query';
 import { api } from './api';
 import type {
   ClubSummary,
+  GuestStatus,
   LiveSnapshot,
   MatchHistoryItem,
   MatchView,
@@ -34,6 +35,7 @@ export const queryKeys = {
   registration: (id: string) => ['registrations', id] as const,
   courts: (clubId: string) => ['courts', clubId] as const,
   members: (clubId: string) => ['members', clubId] as const,
+  clubRoles: (clubId: string) => ['club-roles', clubId] as const,
   invitations: (clubId: string) => ['invitations', clubId] as const,
   audit: (clubId: string) => ['audit', clubId] as const,
   publicSession: (id: string) => ['public-session', id] as const,
@@ -47,8 +49,22 @@ export function useUpcoming() {
   });
 }
 
-export function useStats() {
+export function useGuestStatus(token: string, enabled = true) {
   return useQuery({
+    queryKey: ['guest-status', token],
+    queryFn: () =>
+      api.get<GuestStatus & { created?: boolean }>(
+        `/api/v1/public/checkins/${encodeURIComponent(token)}/guest`,
+      ),
+    enabled,
+    retry: false,
+    staleTime: 0,
+    refetchInterval: (query) =>
+      query.state.data?.session.status === 'LIVE' ? 5_000 : false,
+  });
+}
+
+export function useStats() {  return useQuery({
     queryKey: queryKeys.stats,
     queryFn: () => api.get<Stats>('/api/v1/users/me/stats'),
   });
@@ -206,6 +222,7 @@ export function useMembers(clubId: string | undefined) {
           displayName: string;
           skillRating: number;
           role: string;
+          roleName?: string;
           status: string;
           joinedAt: string | null;
           createdAt: string;
@@ -215,8 +232,24 @@ export function useMembers(clubId: string | undefined) {
   });
 }
 
-export function useInvitations(clubId: string | undefined) {
+export interface ClubRoleOption {
+  key: string;
+  name: string;
+  description: string | null;
+  permissions: string[];
+  isProtected: boolean;
+}
+
+export function useClubRoles(clubId: string | undefined) {
   return useQuery({
+    queryKey: queryKeys.clubRoles(clubId ?? ''),
+    queryFn: () =>
+      api.get<ClubRoleOption[]>(`/api/v1/clubs/${encodeURIComponent(clubId ?? '')}/roles`),
+    enabled: Boolean(clubId),
+  });
+}
+
+export function useInvitations(clubId: string | undefined) {  return useQuery({
     queryKey: queryKeys.invitations(clubId ?? ''),
     queryFn: () =>
       api.get<

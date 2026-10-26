@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
-import { useAuth, useIsAdmin } from '@/lib/auth';
+import { useAuth } from '@/lib/auth';
 import { useLive, useRotation, useSession, invalidateSessionQueries } from '@/lib/queries';
 import { useSessionEvents } from '@/hooks/use-session-events';
 import { formatDay, formatRange, formatShortDay, queueLabel, skillLabel } from '@/lib/format';
@@ -38,7 +38,6 @@ import { ConnectionPill } from '@/components/system/offline-banner';
 export default function SessionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { me } = useAuth();
-  const isAdmin = useIsAdmin();
   const queryClient = useQueryClient();
   const sessionQuery = useSession(id);
   const session = sessionQuery.data;
@@ -70,6 +69,21 @@ export default function SessionDetailPage({ params }: { params: Promise<{ id: st
   );
   const canSelfCheckIn =
     session.checkInPolicy === 'SELF' || session.checkInPolicy === 'SELF_AND_MANAGER';
+  const canManageSession =
+    session.viewerRole === 'OWNER' ||
+    Boolean(
+      session.viewerPermissions?.some((permission) =>
+        [
+          'sessions.manage',
+          'sessions.checkin.manage',
+          'sessions.participants.manage',
+          'sessions.guests.manage',
+          'queue.manage',
+          'scores.record',
+          'scores.correct',
+        ].includes(permission),
+      ),
+    );
 
   const act = async (label: string, operation: () => Promise<unknown>, success: string) => {
     setBusy(label);
@@ -125,7 +139,7 @@ export default function SessionDetailPage({ params }: { params: Promise<{ id: st
           <Button variant="outline" size="sm" onClick={() => void share()}>
             <Share2 className="size-3.5" /> Public link
           </Button>
-          {isAdmin ? (
+          {canManageSession ? (
             <Button asChild size="sm">
               <Link href={`/manage/sessions/${session.id}`}>
                 <ShieldCheck className="size-3.5" /> Manage

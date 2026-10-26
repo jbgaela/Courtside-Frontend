@@ -9,6 +9,7 @@ import { ApiError, api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import {
   clearRegistrationClientState,
+  consumeReturnTo,
   getRegistrationCsrf,
   setRegistrationCsrf,
 } from '@/lib/registration-session';
@@ -78,7 +79,7 @@ export function ActivateAccountForm() {
       clearRegistrationClientState();
       setMe(response.user);
       toast.success('Your account is active. Welcome to PickleQueue.');
-      router.replace('/app');
+      router.replace(consumeReturnTo() ?? '/app');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to activate your account');
       setSaving(false);

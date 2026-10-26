@@ -35,7 +35,7 @@ import { api, newIdempotencyKey } from '@/lib/api';
 import { invalidateSessionQueries, queryKeys, useRegistrations, useSession } from '@/lib/queries';
 import { useSessionEvents } from '@/hooks/use-session-events';
 import { formatRange, formatShortDay } from '@/lib/format';
-import type { ParticipantRow } from '@/lib/types';
+import type { ParticipantRow, SessionRecord } from '@/lib/types';
 import { PageHeader, StatCard } from '@/components/ui/page';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -53,6 +53,7 @@ import {
 import { EmptyState, ErrorState, PageSkeleton } from '@/components/ui/feedback';
 import { Segmented } from '@/components/ui/segmented';
 import { SessionStatusBadge } from '@/components/session/status';
+import { cn } from '@/lib/utils';
 
 type StatusTab = 'all' | 'pending' | 'ready' | 'in';
 type TypeTab = 'all' | 'registered' | 'guests';
@@ -126,6 +127,7 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
   const [editForm, setEditForm] = useState<GuestFormState>(EMPTY_GUEST_FORM);
   const [editErrors, setEditErrors] = useState<Record<string, string>>({});
   const [removing, setRemoving] = useState<ParticipantRow | null>(null);
+  const [guestPolicyBusy, setGuestPolicyBusy] = useState(false);
   const session = sessionQuery.data;
 
   useSessionEvents({
@@ -153,6 +155,31 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
     ['CHECK_IN_OPEN', 'LIVE'].includes(session.status) &&
     (session.status !== 'LIVE' || session.allowLateArrivals);
   const canQueueGuests = canManageGuests;
+  const canChangeGuestPolicy =
+    (session.viewerRole === 'OWNER' || session.viewerPermissions?.includes('sessions.manage')) &&
+    ['CHECK_IN_OPEN', 'LIVE'].includes(session.status) &&
+    session.checkInPolicy !== 'MANAGER';
+
+  const toggleGuestPolicy = async (enabled: boolean) => {
+    setGuestPolicyBusy(true);
+    try {
+      const updated = await api.patch<SessionRecord>(`/api/v1/sessions/${sessionId}/guest-policy`, {
+        guestJoinPolicy: enabled ? 'OPEN' : 'DISABLED',
+        expectedVersion: session.version,
+      });
+      queryClient.setQueryData(['session', sessionId], updated);
+      await invalidateSessionQueries(queryClient, sessionId);
+      toast.success(
+        enabled
+          ? 'Guest self-join enabled. Players scanning the QR can join without an account.'
+          : 'Guest self-join disabled.',
+      );
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Could not update guest joining');
+    } finally {
+      setGuestPolicyBusy(false);
+    }
+  };
 
   const filtered = rows.filter((row) => {
     if (typeTab === 'registered' && isGuestRow(row)) return false;
@@ -666,11 +693,56 @@ export default function CheckInPage({ params }: { params: Promise<{ sessionId: s
 
           <Card>
             <CardContent className="p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <UserPlus className="size-4 text-primary" />
+                  <h2 className="font-display text-base font-bold">Guest self-join</h2>
+                </div>
+                <Badge tone={session.guestJoinPolicy === 'OPEN' ? 'success' : 'neutral'} dot>
+                  {session.guestJoinPolicy === 'OPEN' ? 'On' : 'Off'}
+                </Badge>
+              </div>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Let players scanning the QR code join this session without creating an account. They
+                enter a name, gender and skill level, then see their own queue and match status.
+              </p>
+              <label
+                className={cn(
+                  'mt-3 flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-background/50 p-3.5',
+                  (!canChangeGuestPolicy || guestPolicyBusy) && 'cursor-not-allowed opacity-60',
+                )}
+              >
+                <input
+                  type="checkbox"
+                  checked={session.guestJoinPolicy === 'OPEN'}
+                  onChange={(event) => void toggleGuestPolicy(event.target.checked)}
+                  disabled={!canChangeGuestPolicy || guestPolicyBusy}
+                  className="mt-0.5 size-5 shrink-0 accent-[#164430]"
+                />
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold">
+                    Allow guests to join with this QR code
+                  </span>
+                  <span className="mt-0.5 block text-[0.68rem] leading-relaxed text-muted-foreground">
+                    {session.checkInPolicy === 'MANAGER'
+                      ? 'Switch check-in to self-service or self-and-manager first.'
+                      : 'Off by default. You can turn it on or off at any time while the session is open.'}
+                  </span>
+                </span>
+              </label>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-5">
               <h2 className="font-display text-base font-bold">Queue Master notes</h2>
               <ul className="mt-3 space-y-2 text-[0.68rem] leading-relaxed text-muted-foreground">
                 <li>Only checked-in players and active guests enter the rotation.</li>
                 <li>Approving a registration does not check the player in.</li>
-                <li>Guests are session-scoped and never receive login credentials.</li>
+                <li>
+                  Guests are session-scoped and never receive an account or login credentials. A
+                  self-joined guest can see only their own queue and match status.
+                </li>
                 <li>A guest in an active match cannot be removed until the match ends.</li>
                 <li>Paused players keep their accumulated wait and do not block the queue.</li>
               </ul>

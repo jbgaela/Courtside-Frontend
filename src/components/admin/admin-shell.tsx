@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   ClipboardCheck,
   Globe2,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   ScrollText,
@@ -114,6 +115,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
     { href: '/admin/registrations', label: 'Registrations', icon: ClipboardCheck, badge: pending },
     { href: '/admin/users', label: 'Users', icon: Users },
+    { href: '/admin/roles', label: 'Roles', icon: KeyRound },
     { href: '/admin/audit-logs', label: 'Audit logs', icon: ScrollText },
     { href: '/admin/settings', label: 'Settings', icon: Settings },
   ];
@@ -202,7 +204,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           className="fixed inset-x-0 bottom-0 z-40 border-t border-border/80 bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
           aria-label="Super Admin primary navigation"
         >
-          <div className="grid h-16 grid-cols-5">
+          <div className="grid h-16 grid-cols-6">
             {nav.map((item) => (
               <AdminNavLink key={item.href} item={item} pathname={pathname} mobile />
             ))}

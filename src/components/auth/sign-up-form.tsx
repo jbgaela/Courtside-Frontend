@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation';
 import { CheckCircle2, Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
-import { setRegistrationEmail } from '@/lib/registration-session';
+import { setRegistrationEmail, setReturnTo } from '@/lib/registration-session';
 import { Button } from '@/components/ui/button';
 import { Field, Input, Select } from '@/components/ui/input';
 
-export function SignUpForm() {
+export function SignUpForm({ next }: { next?: string }) {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -43,6 +43,7 @@ export function SignUpForm() {
         acceptTerms: true,
       });
       setRegistrationEmail(email);
+      setReturnTo(next ?? null);
       toast.success('Registration submitted for approval');
       router.replace('/registration-submitted');
     } catch (err) {
@@ -71,6 +72,11 @@ export function SignUpForm() {
             administrator before they can be used. You can return to sign in and check your status.
           </p>
         </div>
+        {next ? (
+          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+            After approval and activation, we&apos;ll take you back to the session you scanned.
+          </p>
+        ) : null}
       </div>
 
       <form className="space-y-4" onSubmit={(event) => void submit(event)}>

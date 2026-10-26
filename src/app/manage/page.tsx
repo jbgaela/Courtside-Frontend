@@ -31,9 +31,7 @@ export default function ManageDashboardPage() {
   const { me } = useAuth();
   const adminClubs = useMemo(
     () =>
-      me?.memberships.filter(
-        (membership) => membership.role === 'OWNER' || membership.role === 'QUEUE_MASTER',
-      ) ?? [],
+      me?.memberships.filter((membership) => membership.canManage) ?? [],
     [me],
   );
   const [clubId, setClubId] = useState<string>(() => adminClubs[0]?.clubId ?? '');
@@ -73,7 +71,7 @@ export default function ManageDashboardPage() {
           <>
             {activeClub?.clubName ?? 'Your club'}
             <span className="ml-2 inline-block translate-y-[-2px] rounded-full bg-secondary px-2.5 py-1 align-middle text-[0.6rem] font-bold uppercase tracking-[0.1em] text-muted-foreground">
-              {activeClub?.role === 'OWNER' ? 'Owner' : 'Queue Master'}
+              {activeClub?.roleName ?? (activeClub?.role === 'OWNER' ? 'Owner' : 'Queue Master')}
             </span>
           </>
         }

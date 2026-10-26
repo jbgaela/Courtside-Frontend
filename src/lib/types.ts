@@ -12,8 +12,11 @@ export interface MembershipSummary {
   clubName: string;
   clubSlug: string;
   role: 'OWNER' | 'QUEUE_MASTER' | 'PLAYER' | string;
+  roleName: string;
   status: string;
   location: string | null;
+  permissions: string[];
+  canManage: boolean;
 }
 
 export type PlatformRole = 'USER' | 'SUPER_ADMIN';
@@ -70,6 +73,8 @@ export interface ClubSummary {
   memberCount?: number;
   upcomingSessions?: number;
   viewerRole: string | null;
+  viewerRoleName?: string | null;
+  viewerPermissions?: string[];
   membershipStatus?: string | null;
   version?: number;
   archived?: boolean;
@@ -98,6 +103,7 @@ export interface SessionRecord {
   format: MatchFormat;
   registrationPolicy: string;
   checkInPolicy: string;
+  guestJoinPolicy: 'DISABLED' | 'OPEN';
   published: boolean;
   allowLateArrivals: boolean;
   matchmaking: MatchmakingConfig;
@@ -107,6 +113,8 @@ export interface SessionRecord {
   checkInOpensAt: string | null;
   createdAt: string;
   viewerRole: string | null;
+  viewerRoleName?: string | null;
+  viewerPermissions?: string[];
   viewerRegistration: {
     id: string;
     status: string;
@@ -122,6 +130,79 @@ export interface SessionRecord {
   pending?: number;
   courts: SessionCourt[];
   memberCount?: number;
+}
+
+export interface PublicCheckIn {
+  club: { name: string; location: string | null };
+  session: {
+    name: string;
+    status: SessionStatus;
+    format: string;
+    venue: string | null;
+    timezone: string;
+    startsAt: string;
+    endsAt: string;
+    capacity: number;
+    checkedIn: number;
+    registered: number;
+    waiting: number;
+  };
+  join: {
+    availability: 'OPEN' | 'FULL' | 'CLOSED';
+    canCheckIn: boolean;
+    canGuestJoin: boolean;
+    guestJoinEnabled: boolean;
+    guestJoinReason: string | null;
+    registrationPolicy: string;
+    checkInPolicy: string;
+    reason: string | null;
+  };
+}
+
+export interface GuestStatus {
+  session: {
+    name: string;
+    clubName: string;
+    status: SessionStatus;
+    format: string;
+    venue: string | null;
+    timezone: string;
+    startsAt: string;
+    endsAt: string;
+  };
+  guest: {
+    displayName: string;
+    status: 'ACTIVE' | 'LEFT' | 'REMOVED' | string;
+    joinedAt: string;
+    origin: 'MANAGER' | 'SELF' | string;
+  };
+  queue: {
+    state: string;
+    position: number | null;
+    estimatedWaitMinutes: number | null;
+    gamesPlayed: number;
+    wins: number;
+    losses: number;
+  } | null;
+  match: GuestMatch | null;
+  lastResult: GuestMatch | null;
+  canLeave: boolean;
+}
+
+export interface GuestMatch {
+  state: 'UPCOMING' | 'PLAYING' | 'COMPLETED';
+  status: string;
+  courtName: string;
+  team: 'A' | 'B';
+  yourTeam: string[];
+  opponents: string[];
+  currentGame: { a: number; b: number };
+  games: Array<{ a: number; b: number }>;
+  gamesWonA: number;
+  gamesWonB: number;
+  winnerTeam: 'A' | 'B' | null;
+  awaitingCompletion: boolean;
+  completedAt: string | null;
 }
 
 export interface UpcomingSession {

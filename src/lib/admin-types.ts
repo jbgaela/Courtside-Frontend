@@ -138,3 +138,65 @@ export interface AdminRecoveryResult {
   expiresAt: string;
   path: string;
 }
+
+export interface AdminRoleSummary {
+  id: string;
+  key: string;
+  name: string;
+  description: string | null;
+  scope: 'PLATFORM' | 'CLUB' | string;
+  permissions: string[];
+  isSystem: boolean;
+  isProtected: boolean;
+  version: number;
+  userCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminRoleMembership {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  accountStatus: AccountStatus;
+  clubId: string;
+  clubName: string;
+  clubSlug: string;
+}
+
+export interface AdminRoleDetail extends AdminRoleSummary {
+  memberships: AdminRoleMembership[];
+}
+
+export interface AdminPermissionDefinition {
+  key: string;
+  label: string;
+  description: string;
+  group: string;
+  ownerOnly?: boolean;
+}
+
+export interface AdminPermissionCatalog {
+  groups: Array<{ name: string; permissions: AdminPermissionDefinition[] }>;
+  platform: AdminPermissionDefinition[];
+  protectedKeys: string[];
+  assignableKeys: string[];
+}
+
+export interface AdminPermissionMatrix {
+  permissions: AdminPermissionDefinition[];
+  roles: AdminRoleSummary[];
+}
+
+export interface AdminUserClubRole {
+  id: string;
+  clubId: string;
+  clubName: string;
+  clubSlug: string;
+  clubArchived: boolean;
+  role: string;
+  roleName: string;
+  status: string;
+  permissions: string[];
+}

@@ -2,15 +2,20 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Clock3, Home, MailCheck, Send } from 'lucide-react';
+import { CheckCircle2, Clock3, Home, MailCheck, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getRegistrationEmail } from '@/lib/registration-session';
+import { getRegistrationEmail, getReturnTo } from '@/lib/registration-session';
 
 export function RegistrationSubmittedView() {
   const email = React.useSyncExternalStore(
     () => () => undefined,
     () => getRegistrationEmail(),
+    () => null,
+  );
+  const returnTo = React.useSyncExternalStore(
+    () => () => undefined,
+    () => getReturnTo(),
     () => null,
   );
 
@@ -40,6 +45,12 @@ export function RegistrationSubmittedView() {
           <div className="flex items-center justify-between gap-3 text-sm">
             <span className="text-muted-foreground">Account</span>
             <span className="truncate font-semibold">{email}</span>
+          </div>
+        ) : null}
+        {returnTo ? (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <CheckCircle2 className="size-4 text-primary" />
+            After activation, we&apos;ll return you to the session you scanned.
           </div>
         ) : null}
         <div className="flex items-center gap-2 text-xs text-muted-foreground">

@@ -281,7 +281,10 @@ export function SignInForm({ next }: { next?: string }) {
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         New to PickleQueue?{' '}
-        <Link href="/sign-up" className="font-semibold text-primary hover:underline">
+        <Link
+          href={next ? `/sign-up?next=${encodeURIComponent(next)}` : '/sign-up'}
+          className="font-semibold text-primary hover:underline"
+        >
           Create an account
         </Link>
       </p>

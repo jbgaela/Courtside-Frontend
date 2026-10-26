@@ -102,10 +102,7 @@ export function AppShell({
   const isAdmin = useIsAdmin();
   const isSuperAdmin = me?.platformRole === 'SUPER_ADMIN';
   const nav = mode === 'manage' ? manageNav : playerNav;
-  const adminClubs =
-    me?.memberships.filter(
-      (membership) => membership.role === 'OWNER' || membership.role === 'QUEUE_MASTER',
-    ) ?? [];
+  const adminClubs = me?.memberships.filter((membership) => membership.canManage) ?? [];
 
   const handleLogout = async () => {
     await logout();
@@ -181,9 +178,8 @@ export function AppShell({
                 </p>
                 <p className="text-[0.65rem] text-muted-foreground">
                   {mode === 'manage'
-                    ? adminClubs[0]?.role === 'OWNER'
-                      ? 'Club owner'
-                      : 'Queue Master'
+                    ? (adminClubs[0]?.roleName ??
+                      (adminClubs[0]?.role === 'OWNER' ? 'Club owner' : 'Queue Master'))
                     : me?.profile
                       ? `${me.profile.skillRating.toFixed(2)} skill`
                       : 'Player'}

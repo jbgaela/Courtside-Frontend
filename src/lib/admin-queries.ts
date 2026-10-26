@@ -5,8 +5,13 @@ import { api } from './api';
 import type {
   AdminAuditList,
   AdminOverview,
+  AdminPermissionCatalog,
+  AdminPermissionMatrix,
   AdminRegistrationDetail,
   AdminRegistrationList,
+  AdminRoleDetail,
+  AdminRoleSummary,
+  AdminUserClubRole,
   AdminUserDetail,
   AdminUserList,
 } from './admin-types';
@@ -20,8 +25,14 @@ export const adminQueryKeys = {
   users: (params: Record<string, string | number | undefined>) =>
     ['admin', 'users', params] as const,
   user: (id: string) => ['admin', 'user', id] as const,
+  userClubRoles: (id: string) => ['admin', 'user', id, 'club-roles'] as const,
   audit: (params: Record<string, string | number | undefined>) =>
     ['admin', 'audit', params] as const,
+  roles: (params: Record<string, string | number | undefined>) =>
+    ['admin', 'roles', params] as const,
+  role: (id: string) => ['admin', 'role', id] as const,
+  permissionCatalog: ['admin', 'permission-catalog'] as const,
+  permissionMatrix: ['admin', 'permission-matrix'] as const,
 };
 
 function queryString(params: Record<string, string | number | undefined>): string {
@@ -100,5 +111,43 @@ export function useAdminAudit(params: {
   return useQuery({
     queryKey: adminQueryKeys.audit(normalized),
     queryFn: () => api.get<AdminAuditList>(`/api/v1/admin/audit-logs${queryString(normalized)}`),
+  });
+}
+
+export function useAdminRoles(params: { q?: string; scope?: string } = {}) {
+  return useQuery({
+    queryKey: adminQueryKeys.roles(params),
+    queryFn: () => api.get<{ items: AdminRoleSummary[] }>(`/api/v1/admin/roles${queryString(params)}`),
+  });
+}
+
+export function useAdminRole(id: string | undefined) {
+  return useQuery({
+    queryKey: adminQueryKeys.role(id ?? ''),
+    queryFn: () => api.get<AdminRoleDetail>(`/api/v1/admin/roles/${id}`),
+    enabled: Boolean(id),
+  });
+}
+
+export function useAdminPermissionCatalog() {
+  return useQuery({
+    queryKey: adminQueryKeys.permissionCatalog,
+    queryFn: () => api.get<AdminPermissionCatalog>('/api/v1/admin/roles/catalog'),
+    staleTime: 5 * 60_000,
+  });
+}
+
+export function useAdminPermissionMatrix() {
+  return useQuery({
+    queryKey: adminQueryKeys.permissionMatrix,
+    queryFn: () => api.get<AdminPermissionMatrix>('/api/v1/admin/roles/matrix'),
+  });
+}
+
+export function useAdminUserClubRoles(id: string | undefined) {
+  return useQuery({
+    queryKey: adminQueryKeys.userClubRoles(id ?? ''),
+    queryFn: () => api.get<AdminUserClubRole[]>(`/api/v1/admin/users/${id}/club-roles`),
+    enabled: Boolean(id),
   });
 }

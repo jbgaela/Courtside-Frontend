@@ -26,7 +26,9 @@ export default function ClubDetailPage({ params }: { params: Promise<{ slug: str
   const club = clubQuery.data;
   const isMember = Boolean(club?.viewerRole) && club?.membershipStatus === 'ACTIVE';
   const isPending = club?.membershipStatus === 'PENDING';
-  const isAdmin = club?.viewerRole === 'OWNER' || club?.viewerRole === 'QUEUE_MASTER';
+  const isAdmin =
+    club?.viewerRole === 'OWNER' ||
+    Boolean(club?.viewerPermissions?.some((permission) => permission !== 'club.view'));
 
   if (clubQuery.isLoading) return <PageSkeleton />;
   if (clubQuery.isError || !club) {

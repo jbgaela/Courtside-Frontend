@@ -93,9 +93,20 @@ export function useAuth(): AuthState {
 
 export function useIsAdmin(): boolean {
   const { me } = useAuth();
+  return Boolean(me?.memberships.some((membership) => membership.canManage));
+}
+
+export function hasPermission(
+  me: Me | null,
+  clubId: string | undefined,
+  permission: string,
+): boolean {
+  if (!me || !clubId) return false;
   return Boolean(
-    me?.memberships.some(
-      (membership) => membership.role === 'OWNER' || membership.role === 'QUEUE_MASTER',
+    me.memberships.some(
+      (membership) =>
+        membership.clubId === clubId &&
+        (membership.role === 'OWNER' || membership.permissions.includes(permission)),
     ),
   );
 }

@@ -41,6 +41,7 @@ export default function SessionSettingsPage({
   const [endsAt, setEndsAt] = useState('');
   const [registrationPolicy, setRegistrationPolicy] = useState('OPEN');
   const [checkInPolicy, setCheckInPolicy] = useState('SELF');
+  const [guestJoinPolicy, setGuestJoinPolicy] = useState<'DISABLED' | 'OPEN'>('DISABLED');
   const [allowLate, setAllowLate] = useState(true);
   const [selectedCourts, setSelectedCourts] = useState<string[]>([]);
   const [preferredSpread, setPreferredSpread] = useState(0.75);
@@ -63,6 +64,7 @@ export default function SessionSettingsPage({
     setEndsAt(toLocal(session.endsAt));
     setRegistrationPolicy(session.registrationPolicy);
     setCheckInPolicy(session.checkInPolicy);
+    setGuestJoinPolicy(session.guestJoinPolicy === 'OPEN' ? 'OPEN' : 'DISABLED');
     setAllowLate(session.allowLateArrivals);
     setSelectedCourts(session.courts.map((court) => court.id));
     setPreferredSpread(session.matchmaking.preferredSkillSpread);
@@ -100,6 +102,7 @@ export default function SessionSettingsPage({
         capacity,
         registrationPolicy,
         checkInPolicy,
+        guestJoinPolicy,
         allowLateArrivals: allowLate,
         courtIds: selectedCourts,
         expectedVersion: session.version,
@@ -135,6 +138,7 @@ export default function SessionSettingsPage({
     capacity,
     registrationPolicy,
     checkInPolicy,
+    guestJoinPolicy,
     allowLateArrivals: allowLate,
     matchmaking: {
       ...session.matchmaking,
@@ -269,7 +273,11 @@ export default function SessionSettingsPage({
                       <Select
                         id="checkIn"
                         value={checkInPolicy}
-                        onChange={(event) => setCheckInPolicy(event.target.value)}
+                        onChange={(event) => {
+                          const next = event.target.value;
+                          setCheckInPolicy(next);
+                          if (next === 'MANAGER') setGuestJoinPolicy('DISABLED');
+                        }}
                       >
                         <option value="SELF">Player self check-in</option>
                         <option value="MANAGER">Queue Master only</option>
@@ -294,6 +302,28 @@ export default function SessionSettingsPage({
                       checked={allowLate}
                       onChange={(event) => setAllowLate(event.target.checked)}
                       className="size-5 accent-[#164430]"
+                      disabled={locked}
+                    />
+                  </label>
+                  <label className="flex items-start justify-between gap-3 rounded-xl border border-border bg-background/50 p-3.5">
+                    <span>
+                      <span className="block text-sm font-semibold">
+                        Allow guest self-join from the QR code
+                      </span>
+                      <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+                        {checkInPolicy === 'MANAGER'
+                          ? 'Switch check-in to player self check-in or self-and-manager first.'
+                          : 'Players can join with a name, gender and skill without an account. Requires self check-in. You can also change this from the check-in board.'}
+                      </span>
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={guestJoinPolicy === 'OPEN'}
+                      onChange={(event) =>
+                        setGuestJoinPolicy(event.target.checked ? 'OPEN' : 'DISABLED')
+                      }
+                      className="mt-0.5 size-5 shrink-0 accent-[#164430]"
+                      disabled={locked || checkInPolicy === 'MANAGER'}
                     />
                   </label>
                 </div>

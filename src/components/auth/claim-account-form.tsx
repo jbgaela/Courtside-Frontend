@@ -7,7 +7,7 @@ import { CheckCircle2, KeyRound, Loader2, UserRound } from 'lucide-react';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { clearRegistrationClientState } from '@/lib/registration-session';
+import { clearRegistrationClientState, consumeReturnTo } from '@/lib/registration-session';
 import type { Me } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Field, Input } from '@/components/ui/input';
@@ -51,7 +51,7 @@ export function ClaimAccountForm({ initialToken }: { initialToken?: string }) {
       clearRegistrationClientState();
       setMe(response.user);
       toast.success('Account activated. Welcome to PickleQueue.');
-      router.replace('/app');
+      router.replace(consumeReturnTo() ?? '/app');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to activate this account');
     } finally {

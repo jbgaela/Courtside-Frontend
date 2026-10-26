@@ -35,6 +35,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           toastOptions={{
             className:
               'rounded-xl border border-border bg-card text-foreground shadow-lift text-sm',
+            classNames: {
+              title: '!text-foreground',
+              description: '!text-muted-foreground',
+            },
           }}
         />
         <PwaRegistrar />

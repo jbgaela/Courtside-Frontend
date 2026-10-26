@@ -27,10 +27,7 @@ export default function ManageMorePage() {
   const [installPrompt, setInstallPrompt] = useState<
     (Event & { prompt?: () => Promise<void> }) | null
   >(null);
-  const adminClubs =
-    me?.memberships.filter(
-      (membership) => membership.role === 'OWNER' || membership.role === 'QUEUE_MASTER',
-    ) ?? [];
+  const adminClubs = me?.memberships.filter((membership) => membership.canManage) ?? [];
 
   useEffect(() => {
     const handler = (event: Event) => {

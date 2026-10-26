@@ -85,7 +85,8 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
   const adminClubs = useMemo(
     () =>
       me?.memberships.filter(
-        (membership) => membership.role === 'OWNER' || membership.role === 'QUEUE_MASTER',
+        (membership) =>
+          membership.canManage && membership.permissions.includes('sessions.create'),
       ) ?? [],
     [me],
   );
@@ -102,6 +103,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
   const [format, setFormat] = useState<'DOUBLES' | 'SINGLES'>('DOUBLES');
   const [registrationPolicy, setRegistrationPolicy] = useState('OPEN');
   const [checkInPolicy, setCheckInPolicy] = useState('SELF');
+  const [guestJoinPolicy, setGuestJoinPolicy] = useState<'DISABLED' | 'OPEN'>('DISABLED');
   const [allowLate, setAllowLate] = useState(true);
   const [selectedCourts, setSelectedCourts] = useState<string[]>([]);
   const [strategy, setStrategy] = useState<'HYBRID' | 'SKILL_FIRST' | 'FAIRNESS_FIRST'>('HYBRID');
@@ -164,7 +166,8 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
             endDate > startDate,
         )
       : step === 1
-        ? selectedCourts.length > 0
+        ? selectedCourts.length > 0 &&
+          !(guestJoinPolicy === 'OPEN' && checkInPolicy === 'MANAGER')
         : true;
 
   const toggleCourt = (id: string) => {
@@ -191,6 +194,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
         format,
         registrationPolicy,
         checkInPolicy,
+        guestJoinPolicy,
         published,
         allowLateArrivals: allowLate,
         courtIds: selectedCourts,
@@ -227,7 +231,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex min-w-0 items-center justify-between gap-2">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
           <Link href="/manage/sessions">
             <ArrowLeft className="size-4" /> Sessions
@@ -240,7 +244,7 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
               setClubId(event.target.value);
               setSelectedCourts([]);
             }}
-            className="h-10 rounded-full border border-border bg-card px-4 text-xs font-semibold"
+            className="h-10 min-w-0 max-w-[62vw] truncate rounded-full border border-border bg-card px-4 text-xs font-semibold"
             aria-label="Club"
           >
             {adminClubs.map((membership) => (
@@ -481,6 +485,19 @@ export function SessionWizard({ initialClubId }: { initialClubId?: string }) {
                         label="Allow late arrivals"
                         description="Players who check in after the session goes live can join the waiting queue."
                       />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Toggle
+                        checked={guestJoinPolicy === 'OPEN'}
+                        onChange={(value) => setGuestJoinPolicy(value ? 'OPEN' : 'DISABLED')}
+                        label="Allow guest self-join"
+                        description="Players scanning the session QR can join without an account. Requires self check-in."
+                      />
+                      {guestJoinPolicy === 'OPEN' && checkInPolicy === 'MANAGER' ? (
+                        <p className="mt-1.5 text-xs font-medium text-destructive">
+                          Choose self check-in or self-and-manager to allow guests to join.
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 </div>

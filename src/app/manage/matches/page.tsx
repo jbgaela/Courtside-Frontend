@@ -16,9 +16,7 @@ export default function ManageMatchesPage() {
   const { me } = useAuth();
   const adminClubs = useMemo(
     () =>
-      me?.memberships.filter(
-        (membership) => membership.role === 'OWNER' || membership.role === 'QUEUE_MASTER',
-      ) ?? [],
+      me?.memberships.filter((membership) => membership.canManage) ?? [],
     [me],
   );
   const [clubId, setClubId] = useState(() => adminClubs[0]?.clubId ?? '');

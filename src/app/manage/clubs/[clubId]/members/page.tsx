@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
-import { queryKeys, useClub, useInvitations, useMembers } from '@/lib/queries';
+import { queryKeys, useClub, useClubRoles, useInvitations, useMembers } from '@/lib/queries';
 import { relativeTime } from '@/lib/format';
 import { PageHeader, StatCard } from '@/components/ui/page';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,7 +35,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
   const members = useMembers(clubId);
   const invitations = useInvitations(clubId);
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState<'PLAYER' | 'QUEUE_MASTER'>('PLAYER');
+  const [role, setRole] = useState('PLAYER');
   const [busy, setBusy] = useState<string | null>(null);
   const [devInvite, setDevInvite] = useState<{
     email: string;
@@ -44,6 +44,14 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
   } | null>(null);
   const club = clubQuery.data;
   const isOwner = club?.viewerRole === 'OWNER';
+  const canManageMembers = Boolean(
+    isOwner || club?.viewerPermissions?.includes('club.members.manage'),
+  );
+  const canInvite = Boolean(
+    isOwner || club?.viewerPermissions?.includes('club.invitations.manage'),
+  );
+  const roles = useClubRoles(canManageMembers || canInvite ? clubId : undefined);
+  const assignableRoles = (roles.data ?? []).filter((entry) => entry.key !== 'OWNER');
 
   if (clubQuery.isLoading || members.isLoading) return <PageSkeleton />;
   if (clubQuery.isError || !club) {
@@ -196,7 +204,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        {isOwner ? (
+                        {canManageMembers ? (
                           <>
                             <Button
                               size="sm"
@@ -220,7 +228,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                             </Button>
                           </>
                         ) : (
-                          <Badge tone="neutral">Owner approval</Badge>
+                          <Badge tone="neutral">Manager approval</Badge>
                         )}
                       </div>
                     </div>
@@ -262,7 +270,13 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                         aria-label={`Role for ${member.displayName}`}
                       >
                         <option value="PLAYER">Player</option>
-                        <option value="QUEUE_MASTER">Queue Master</option>
+                        {assignableRoles
+                          .filter((entry) => entry.key !== 'PLAYER')
+                          .map((entry) => (
+                            <option key={entry.key} value={entry.key}>
+                              {entry.name}
+                            </option>
+                          ))}
                       </select>
                     ) : (
                       <Badge
@@ -274,10 +288,10 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
                               : 'neutral'
                         }
                       >
-                        {member.role}
+                        {member.roleName ?? member.role}
                       </Badge>
                     )}
-                    {isOwner && member.role !== 'OWNER' ? (
+                    {canManageMembers && member.role !== 'OWNER' ? (
                       <Button
                         variant="ghost"
                         size="icon-sm"
@@ -335,47 +349,56 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
         </div>
 
         <aside className="space-y-4">
-          <Card>
-            <CardContent className="p-5">
-              <div className="flex items-center gap-2">
-                <MailPlus className="size-4 text-primary" />
-                <h2 className="font-display text-base font-bold">Invite someone</h2>
-              </div>
-              <form className="mt-3 space-y-3" onSubmit={(event) => void invite(event)}>
-                <Field label="Email" htmlFor="inviteEmail">
-                  <Input
-                    id="inviteEmail"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="player@example.com"
-                    required
-                  />
-                </Field>
-                <Field label="Role" htmlFor="inviteRole">
-                  <Select
-                    id="inviteRole"
-                    value={role}
-                    onChange={(event) => setRole(event.target.value as typeof role)}
-                  >
-                    <option value="PLAYER">Player</option>
-                    {isOwner ? <option value="QUEUE_MASTER">Queue Master</option> : null}
-                  </Select>
-                </Field>
-                <Button type="submit" className="w-full" disabled={busy !== null || !email}>
-                  {busy === 'invite' ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <UserPlus className="size-4" />
-                  )}
-                  Create invitation
-                </Button>
-              </form>
-              {!isOwner ? (
-                <p className="mt-2 text-[0.62rem] leading-relaxed text-muted-foreground">
-                  Only the club owner can invite Queue Masters.
-                </p>
-              ) : null}
+          {canInvite ? (
+            <Card>
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2">
+                  <MailPlus className="size-4 text-primary" />
+                  <h2 className="font-display text-base font-bold">Invite someone</h2>
+                </div>
+                <form className="mt-3 space-y-3" onSubmit={(event) => void invite(event)}>
+                  <Field label="Email" htmlFor="inviteEmail">
+                    <Input
+                      id="inviteEmail"
+                      type="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      placeholder="player@example.com"
+                      required
+                    />
+                  </Field>
+                  <Field label="Role" htmlFor="inviteRole">
+                    <Select
+                      id="inviteRole"
+                      value={role}
+                      onChange={(event) => setRole(event.target.value)}
+                    >
+                      {assignableRoles.length > 0 ? (
+                        assignableRoles.map((entry) => (
+                          <option key={entry.key} value={entry.key}>
+                            {entry.name}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="PLAYER">Player</option>
+                      )}
+                    </Select>
+                  </Field>
+                  <Button type="submit" className="w-full" disabled={busy !== null || !email}>
+                    {busy === 'invite' ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <UserPlus className="size-4" />
+                    )}
+                    Create invitation
+                  </Button>
+                </form>
+                {!isOwner ? (
+                  <p className="mt-2 text-[0.62rem] leading-relaxed text-muted-foreground">
+                    You can invite roles with the same access as your own. The club owner can invite
+                    any role.
+                  </p>
+                ) : null}
               {devInvite ? (
                 <div className="mt-3 rounded-xl border border-[#d9edb2] bg-lime-soft/60 p-3">
                   <p className="text-xs font-bold text-[#385513]">
@@ -408,6 +431,7 @@ export default function ClubMembersPage({ params }: { params: Promise<{ clubId: 
               ) : null}
             </CardContent>
           </Card>
+          ) : null}
 
           <Card>
             <CardContent className="p-5">

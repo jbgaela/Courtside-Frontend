@@ -40,6 +40,7 @@ import {
 import { ErrorState, PageSkeleton } from '@/components/ui/feedback';
 import { AccountStatusBadge, PlatformRoleBadge } from '@/components/admin/status';
 import { AdminReauthDialog } from '@/components/admin/reauth-dialog';
+import { AdminUserClubRolesCard } from '@/components/admin/user-club-roles';
 
 export default function AdminUserDetailPage() {
   const params = useParams<{ id: string }>();
@@ -303,29 +304,7 @@ export default function AdminUserDetailPage() {
 
           <Card>
             <CardContent className="p-5 sm:p-6">
-              <h2 className="font-display text-lg font-bold">Club memberships</h2>
-              {data.memberships.length === 0 ? (
-                <p className="mt-3 text-sm text-muted-foreground">No club memberships.</p>
-              ) : (
-                <div className="mt-4 divide-y divide-border rounded-2xl border border-border">
-                  {data.memberships.map((membership) => (
-                    <div
-                      key={membership.id}
-                      className="flex items-center justify-between gap-3 p-3.5"
-                    >
-                      <div>
-                        <p className="text-sm font-semibold">{membership.clubName}</p>
-                        <p className="text-[0.68rem] text-muted-foreground">
-                          {membership.role} · {membership.status}
-                        </p>
-                      </div>
-                      <Button asChild variant="ghost" size="sm">
-                        <Link href={`/manage/clubs/${membership.clubId}`}>Open club</Link>
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <AdminUserClubRolesCard userId={data.id} />
               {data.ownedClubs.length > 0 ? (
                 <div className="mt-4 rounded-xl border border-[#f1dfb9] bg-[#fbf0d9] p-3 text-xs text-[#8a5a0b]">
                   Active club owner: {data.ownedClubs.map((club) => club.name).join(', ')}.
